@@ -1,0 +1,26 @@
+{
+  "name": "codealpha_e-commerce-store",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bubblegunm1111/CodeAlpha_E-commerce-Store.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/bubblegunm1111/CodeAlpha_E-commerce-Store/issues"
+  },
+  "homepage": "https://github.com/bubblegunm1111/CodeAlpha_E-commerce-Store#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
