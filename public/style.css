@@ -816,6 +816,112 @@ h1, h2, h3, h4, h5, h6, .logo {
     background: rgba(212, 175, 55, 0.1);
 }
 
+/* Product Detail Page */
+.product-detail-page {
+    padding: 4rem 8rem;
+    max-width: 1600px;
+    margin: 0 auto;
+}
+
+.product-detail-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    margin-bottom: 6rem;
+    align-items: center;
+}
+
+.detail-image-box {
+    width: 100%;
+    aspect-ratio: 1;
+    background-color: #0b0b0c;
+    border: 1px solid var(--border-red);
+    position: relative;
+}
+
+.detail-info-box {
+    display: flex;
+    flex-direction: column;
+}
+
+.detail-title {
+    font-size: clamp(2rem, 3vw, 3rem);
+    margin-bottom: 1rem;
+    letter-spacing: 0.05em;
+    color: var(--text-cream);
+}
+
+.detail-price {
+    font-size: 1.5rem;
+    color: var(--accent);
+    margin-bottom: 2rem;
+}
+
+.detail-desc {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+}
+
+.detail-specs {
+    margin-bottom: 3rem;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.detail-specs p {
+    margin-bottom: 0.5rem;
+}
+
+.detail-specs strong {
+    color: var(--text-cream);
+    margin-right: 0.5rem;
+}
+
+.detail-actions {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+.large-btn {
+    padding: 1rem 3rem;
+    font-size: 0.85rem;
+    width: 100%;
+    max-width: 300px;
+}
+
+.wishlist-detail-btn {
+    background: transparent;
+    border: 1px solid var(--border-red);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.wishlist-detail-btn:hover {
+    border-color: var(--accent);
+}
+
+.related-products {
+    border-top: 1px solid var(--border-red);
+    padding-top: 4rem;
+}
+
+.related-title {
+    font-size: 1.5rem;
+    color: var(--accent);
+    margin-bottom: 3rem;
+    text-align: center;
+    letter-spacing: 0.1em;
+}
+
 /* Phones & small tablets */
 @media (max-width: 900px) {
     .navbar { padding: 1.25rem 1.5rem; }

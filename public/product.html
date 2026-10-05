@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details | SYS Royal Essence</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="navbar fouc-hidden" style="border-bottom: 1px solid var(--border-red); background-color: var(--bg-dark); position: sticky; top: 0; z-index: 100;">
+        <div class="logo">
+            <svg width="30" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M3 17h18v2H3z"/><path d="M4 15l2.5-8 3.5 4 2-6 2 6 3.5-4L20 15z"/>
+            </svg>
+            <span>SYS | ROYAL ESSENCE</span>
+        </div>
+        <nav class="nav-links">
+            <a href="index.html">SHOP</a>
+            <a href="index.html#categories">COLLECTIONS</a>
+            <a href="story.html">OUR STORY</a>
+        </nav>
+        <div class="nav-icons">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78v0z"/></svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+            <span class="icon-text" id="nav-wishlist">WISHLIST (0)</span>
+            <span class="icon-text" id="nav-bag">BAG (0)</span>
+        </div>
+    </header>
+
+    <main class="product-detail-page">
+        <div class="breadcrumb" style="margin-bottom: 2rem;">
+            <a href="jewelry.html" style="color: inherit; text-decoration: none;">&larr; Back to Jewelry</a> / <span id="bread-name"></span>
+        </div>
+        
+        <div class="product-detail-container" id="detail-container">
+            <!-- Injected by product.js -->
+        </div>
+
+        <div class="related-products">
+            <h3 class="related-title">YOU MIGHT ALSO LIKE</h3>
+            <div class="products-grid" id="related-grid" style="grid-template-columns: repeat(4, 1fr);">
+                <!-- Related injected by product.js -->
+            </div>
+        </div>
+    </main>
+
+    <script src="js/db.js"></script>
+    <script src="js/product.js"></script>
+</body>
+</html>

@@ -1,38 +1,4 @@
-// Mock Database for Jewelry
-const jewelryDatabase = [
-    {
-        id: "j1",
-        name: "THE CRIMSON TEAR NECKLACE",
-        category: "necklace",
-        price: 12500,
-        description: "A rare pear-cut ruby surrounded by pavé diamonds, set in 18k white gold.",
-        imagePath: "images/jewelry/necklaces/crimson_tear.jpg"
-    },
-    {
-        id: "j2",
-        name: "ETERNITY DIAMOND BAND",
-        category: "ring",
-        price: 4200,
-        description: "A continuous circle of flawless brilliant-cut diamonds, representing eternal romance.",
-        imagePath: "images/jewelry/rings/eternity_band.jpg"
-    },
-    {
-        id: "j3",
-        name: "ROYAL EMERALD BRACELET",
-        category: "bracelet",
-        price: 6800,
-        description: "A delicate fusion of emeralds and gold, crafted for timeless elegance.",
-        imagePath: "images/jewelry/bracelets/royal_emerald.jpg"
-    },
-    {
-        id: "j4",
-        name: "THE ETERNAL DROP EARRINGS",
-        category: "earring",
-        price: 7900,
-        description: "Brilliant diamonds in a graceful drop design, crafted in 18k gold.",
-        imagePath: "images/jewelry/earrings/eternal_drop.jpg"
-    }
-];
+// Database is now loaded from db.js
 
 // App State
 let cart = JSON.parse(localStorage.getItem('sys_cart')) || [];
@@ -73,7 +39,7 @@ function renderProducts(products) {
         card.className = 'product-card';
         card.innerHTML = `
             <div class="product-image-container">
-                <div class="image-placeholder">
+                <div class="image-placeholder" style="cursor: pointer;" onclick="window.location.href='product.html?id=${product.id}'">
                     <img src="${product.imagePath}" alt="${product.name}" onerror="this.style.display='none'">
                 </div>
                 <button class="wishlist-btn ${isInWishlist ? 'active' : ''}" data-id="${product.id}">
