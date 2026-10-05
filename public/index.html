@@ -1,11 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>E-commerce Store</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Royal Essence | Luxury Boutique</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>E-commerce Store — localhost is running</h1>
+    <div class="splash-screen">
+        <div class="splash-content">
+            <header class="navbar">
+                <div class="logo">ROYAL ESSENCE</div>
+                <nav class="nav-links">
+                    <a href="#">SHOP</a>
+                    <a href="#">COLLECTIONS</a>
+                    <a href="#">OUR STORY</a>
+                    <a href="#">FRAGRANCE</a>
+                    <a href="#">JEWELRY</a>
+                </nav>
+                <div class="nav-icons">
+                    <span class="icon">SEARCH</span>
+                    <span class="icon">WISHLIST</span>
+                    <span class="icon">BAG</span>
+                </div>
+            </header>
+
+            <main class="hero">
+                <div class="hero-text">
+                    <h1 class="hero-title">EMBRACE THE<br>DARK ROMANCE</h1>
+                    <p class="hero-subtitle">Discover the timeless elegance of Royal Essence. Exquisite jewelry and scents crafted for the regal spirit.</p>
+                    <div class="hero-cta">
+                        <a href="#" class="btn btn-primary">SHOP PERFUMES</a>
+                        <a href="#" class="btn btn-secondary">EXPLORE JEWELRY</a>
+                    </div>
+                </div>
+                
+                <div class="product-showcase">
+                    <!-- 3D perfume bottle rendered in js/perfume.js; rotates with the mouse -->
+                    <div class="perfume-stage" id="perfume-stage" aria-label="Sangeluce Noctis Ame perfume bottle, interactive 3D view"></div>
+                </div>
+            </main>
+            
+            <div class="scroll-indicator">
+                <span>SCROLL TO EXPLORE</span>
+                <div class="scroll-line"></div>
+            </div>
+        </div>
+    </div>
+    
+    <section class="main-page">
+        <!-- More content will go here -->
+    </section>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+    <script type="module" src="js/perfume.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
