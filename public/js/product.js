@@ -30,6 +30,9 @@ if (!product) {
         </div>
         <div class="detail-info-box">
             <h1 class="detail-title">${product.name}</h1>
+            <div style="color: var(--accent); margin-bottom: 1rem; font-size: 0.9rem;">
+                &#9733; &#9733; &#9733; &#9733; ${product.rating === 5.0 ? '&#9733;' : '&#9734;'} <span style="color: var(--text-muted); margin-left: 0.5rem;">(${product.rating})</span>
+            </div>
             <p class="detail-price">${formatPrice(product.price)}</p>
             <p class="detail-desc">${product.description}</p>
             

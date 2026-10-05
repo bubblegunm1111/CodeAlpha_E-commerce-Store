@@ -46,38 +46,17 @@ function renderProducts(products) {
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="${isInWishlist ? 'var(--accent)' : 'none'}" stroke="var(--accent)" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78v0z"/></svg>
                 </button>
             </div>
-            <div class="product-info">
+            <div class="product-info" style="cursor: pointer;" onclick="window.location.href='product.html?id=${product.id}'">
                 <h3 class="product-title">${product.name}</h3>
-                <p class="product-desc">${product.description}</p>
-                <div class="product-bottom">
+                <div class="product-bottom" style="margin-top: 1rem;">
                     <span class="product-price">${formatPrice(product.price)}</span>
-                    <button class="add-cart-btn" data-id="${product.id}">ADD TO BAG &rarr;</button>
                 </div>
             </div>
         `;
         gridElement.appendChild(card);
     });
 
-    // Attach listeners
-    document.querySelectorAll('.add-cart-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            const id = e.target.dataset.id;
-            const product = jewelryDatabase.find(p => p.id === id);
-            cart.push(product);
-            localStorage.setItem('sys_cart', JSON.stringify(cart));
-            updateHeaderCounts();
-            
-            const originalText = e.target.innerHTML;
-            e.target.innerHTML = "ADDED! &check;";
-            e.target.style.backgroundColor = "var(--accent)";
-            e.target.style.color = "var(--bg-dark)";
-            setTimeout(() => {
-                e.target.innerHTML = originalText;
-                e.target.style.backgroundColor = "transparent";
-                e.target.style.color = "var(--accent)";
-            }, 1000);
-        });
-    });
+    // Removed grid-level add to cart event listeners since it's now on the product page
 
     document.querySelectorAll('.wishlist-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
