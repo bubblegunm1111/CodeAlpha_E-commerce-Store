@@ -74,7 +74,7 @@ h1, h2, h3, h4, h5, h6, .logo {
 .splash-screen {
     width: 100vw;
     height: 100vh;
-    background-image: url('images/clean_burgundy_fabric_1791239565717.jpg');
+    background-image: url('images/burgundy_fabric_bg_1791239164998.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -293,22 +293,7 @@ h1, h2, h3, h4, h5, h6, .logo {
     pointer-events: none;
 }
 
-/* Fabric texture specifically behind the bottle */
-.perfume-stage::after {
-    content: '';
-    position: absolute;
-    left: 40%;
-    top: 45%;
-    width: 60%;
-    aspect-ratio: 1;
-    transform: translate(-50%, -50%) rotate(-15deg);
-    background-image: url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noise"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.01 0.1" numOctaves="3"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noise)" opacity="1"/%3E%3C/svg%3E');
-    mix-blend-mode: overlay;
-    opacity: 0.4;
-    mask-image: radial-gradient(circle, black 30%, transparent 70%);
-    -webkit-mask-image: radial-gradient(circle, black 30%, transparent 70%);
-    pointer-events: none;
-}
+
 
 .perfume-stage canvas {
     position: relative;
