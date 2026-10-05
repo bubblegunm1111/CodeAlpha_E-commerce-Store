@@ -560,11 +560,10 @@ h1, h2, h3, h4, h5, h6, .logo {
     text-align: center;
     border-bottom: 1px solid var(--border-red);
     background: 
-        radial-gradient(ellipse at 80% 20%, rgba(140, 16, 28, 0.4) 0%, transparent 60%),
-        radial-gradient(ellipse at 20% 80%, rgba(140, 16, 28, 0.2) 0%, transparent 50%),
-        linear-gradient(to right, var(--bg-dark) 0%, rgba(11,11,12,0.3) 20%, rgba(11,11,12,0.3) 80%, var(--bg-dark) 100%),
-        linear-gradient(to bottom, var(--bg-dark) 0%, rgba(11,11,12,0.3) 30%, var(--bg-dark) 100%),
-        url('images/jewelry_hero_bg.jpg') center/cover no-repeat;
+        linear-gradient(to right, var(--bg-dark) 0%, rgba(11,11,12,0.6) 30%, transparent 100%),
+        linear-gradient(to bottom, transparent 0%, rgba(11,11,12,0.5) 60%, var(--bg-dark) 100%),
+        url('images/jewelry_crown_hero.jpg') center / cover no-repeat;
+    background-color: var(--bg-dark);
 }
 
 .breadcrumb {
