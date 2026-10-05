@@ -19,9 +19,21 @@ if (!product) {
     document.getElementById('detail-container').innerHTML = '<p>Product not found.</p>';
 } else {
     document.getElementById('bread-name').textContent = product.name;
+    const backLink = document.getElementById('back-link');
+    if (backLink) {
+        backLink.href = product.department + '.html';
+        const deptName = product.department.charAt(0).toUpperCase() + product.department.slice(1);
+        backLink.innerHTML = '&larr; Back to ' + (deptName === 'Exclusive' ? 'Royal Essence' : deptName);
+    }
     
     const isInWishlist = wishlist.some(item => item.id === product.id);
     
+    // Build optional specs
+    let specsHtml = `<p><strong>Category:</strong> <span style="text-transform: capitalize;">${product.category.replace('_', ' ')}</span></p>`;
+    if (product.material) specsHtml += `<p><strong>Material:</strong> <span style="text-transform: capitalize;">${product.material}</span></p>`;
+    if (product.gemstone) specsHtml += `<p><strong>Gemstone:</strong> <span style="text-transform: capitalize;">${product.gemstone}</span></p>`;
+    if (product.size) specsHtml += `<p><strong>Size:</strong> <span style="text-transform: capitalize;">${product.size}</span></p>`;
+
     document.getElementById('detail-container').innerHTML = `
         <div class="detail-image-box">
             <div class="image-placeholder">
@@ -37,9 +49,7 @@ if (!product) {
             <p class="detail-desc">${product.description}</p>
             
             <div class="detail-specs">
-                <p><strong>Category:</strong> <span style="text-transform: capitalize;">${product.category}</span></p>
-                <p><strong>Material:</strong> <span style="text-transform: capitalize;">${product.material}</span></p>
-                <p><strong>Gemstone:</strong> <span style="text-transform: capitalize;">${product.gemstone}</span></p>
+                ${specsHtml}
             </div>
 
             <div class="detail-actions">
