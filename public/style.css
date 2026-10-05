@@ -891,6 +891,16 @@ h1, h2, h3, h4, h5, h6, .logo {
     margin-bottom: 1.5rem;
 }
 
+.detail-breadcrumbs a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.detail-breadcrumbs a:hover {
+    color: var(--accent);
+}
+
 .detail-star-separator {
     display: flex;
     align-items: center;

@@ -36,7 +36,7 @@ if (!product) {
         </div>
         <div class="detail-info-box">
             <div class="detail-breadcrumbs">
-                COLLECTIONS &nbsp;/&nbsp; ${deptName} &nbsp;/&nbsp; ${product.name.toUpperCase()}
+                <a href="index.html#categories">COLLECTIONS</a> &nbsp;/&nbsp; <a href="${product.department}.html">${deptName}</a> &nbsp;/&nbsp; ${product.name.toUpperCase()}
             </div>
             
             <div class="detail-star-separator">
