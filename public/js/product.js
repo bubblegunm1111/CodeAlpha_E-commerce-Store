@@ -20,6 +20,8 @@ if (!product) {
 } else {
     const deptName = product.department === 'exclusive' ? 'THE ROYAL ESSENCE' : product.department.toUpperCase();
     
+    const isInWishlist = wishlist.some(item => item.id === product.id);
+
     // Build specs as grid
     let specsHtml = `<div style="display: grid; grid-template-columns: 100px 1fr; gap: 0.5rem; font-size: 0.75rem; letter-spacing: 0.05em; color: var(--text-muted); text-transform: uppercase;">`;
     specsHtml += `<span style="color: var(--text-muted);">CATEGORY:</span> <span style="color: var(--text-cream);">${product.category.replace('_', ' ')}</span>`;
