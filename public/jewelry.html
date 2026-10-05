@@ -32,44 +32,78 @@
     </header>
 
     <main class="store-page">
-        <div class="store-header">
-            <h1 class="story-title">High Jewelry</h1>
-            <p class="hero-subtitle" style="margin: 0 auto;">Discover pieces of timeless brilliance and rare beauty.</p>
+        <div class="store-hero">
+            <div class="breadcrumb">Home / Jewelry</div>
+            <div class="hero-content">
+                <div class="kicker"><span class="line"></span> THE <span class="line"></span></div>
+                <h1 class="store-title">JEWELRY COLLECTION</h1>
+                <p class="store-subtitle">Timeless pieces, designed for the royal spirit.</p>
+                <div class="category-tabs">
+                    <button class="tab-btn active" data-cat="ring">RINGS</button>
+                    <button class="tab-btn" data-cat="necklace">NECKLACES</button>
+                    <button class="tab-btn" data-cat="bracelet">BRACELETS</button>
+                    <button class="tab-btn" data-cat="all">ALL JEWELRY</button>
+                </div>
+            </div>
         </div>
 
-        <div class="store-layout">
-            <aside class="store-sidebar">
-                <div class="filter-group">
-                    <h3>SEARCH</h3>
-                    <input type="text" id="search-input" class="filter-input" placeholder="Search by name...">
-                </div>
-
-                <div class="filter-group">
-                    <h3>PRICE</h3>
-                    <select id="price-filter" class="filter-select">
+        <div class="filters-bar">
+            <div class="search-box">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+                <input type="text" id="search-input" placeholder="Search by name...">
+            </div>
+            
+            <div class="filter-dropdowns">
+                <div class="dropdown">
+                    <label>PRICE</label>
+                    <select id="price-filter">
                         <option value="all">All Prices</option>
-                        <option value="low-high">Low to High</option>
-                        <option value="high-low">High to Low</option>
                         <option value="under-5000">Under $5,000</option>
                         <option value="over-5000">$5,000 & Above</option>
                     </select>
                 </div>
-
-                <div class="filter-group">
-                    <h3>CATEGORY</h3>
-                    <label class="filter-checkbox"><input type="checkbox" value="ring" class="cat-filter" checked> Rings</label>
-                    <label class="filter-checkbox"><input type="checkbox" value="necklace" class="cat-filter" checked> Necklaces</label>
-                    <label class="filter-checkbox"><input type="checkbox" value="bracelet" class="cat-filter" checked> Bracelets</label>
+                <div class="dropdown">
+                    <label>CATEGORY</label>
+                    <select id="cat-filter">
+                        <option value="all">All Jewelry</option>
+                        <option value="ring">Rings</option>
+                        <option value="necklace">Necklaces</option>
+                        <option value="bracelet">Bracelets</option>
+                        <option value="earring">Earrings</option>
+                    </select>
                 </div>
-                
-                <div class="upload-instructions" style="margin-top: 2rem; padding: 1rem; border: 1px dashed var(--accent); font-size: 0.75rem; color: var(--text-muted);">
-                    <strong>IMAGE FOLDER PATH:</strong><br>
-                    Place your jewelry photos in:<br>
-                    <code>public/images/jewelry/</code><br>
-                    Ensure filenames match the database (e.g., ring1.jpg). Currently displaying black placeholders.
+                <div class="dropdown">
+                    <label>MATERIAL</label>
+                    <select id="material-filter">
+                        <option value="all">All</option>
+                        <option value="gold">Gold</option>
+                        <option value="platinum">Platinum</option>
+                    </select>
                 </div>
-            </aside>
+                <div class="dropdown">
+                    <label>GEMSTONE</label>
+                    <select id="gem-filter">
+                        <option value="all">All</option>
+                        <option value="diamond">Diamond</option>
+                        <option value="ruby">Ruby</option>
+                        <option value="emerald">Emerald</option>
+                    </select>
+                </div>
+                <div class="dropdown">
+                    <label>SORT BY</label>
+                    <select id="sort-filter">
+                        <option value="featured">Featured</option>
+                        <option value="low-high">Price: Low to High</option>
+                        <option value="high-low">Price: High to Low</option>
+                    </select>
+                </div>
+            </div>
+            
+            <button id="clear-filters" class="clear-btn">CLEAR ALL</button>
+        </div>
 
+        <div class="store-layout">
+            <div class="results-count" id="results-count">24 PIECES</div>
             <section class="products-grid" id="products-grid">
                 <!-- Products dynamically injected here via jewelry.js -->
             </section>

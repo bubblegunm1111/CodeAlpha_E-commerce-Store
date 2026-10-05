@@ -2,7 +2,7 @@
 const jewelryDatabase = [
     {
         id: "j1",
-        name: "The Crimson Tear Necklace",
+        name: "THE CRIMSON TEAR NECKLACE",
         category: "necklace",
         price: 12500,
         description: "A rare pear-cut ruby surrounded by pavé diamonds, set in 18k white gold.",
@@ -10,7 +10,7 @@ const jewelryDatabase = [
     },
     {
         id: "j2",
-        name: "Eternity Diamond Band",
+        name: "ETERNITY DIAMOND BAND",
         category: "ring",
         price: 4200,
         description: "A continuous circle of flawless brilliant-cut diamonds, representing eternal romance.",
@@ -18,46 +18,35 @@ const jewelryDatabase = [
     },
     {
         id: "j3",
-        name: "Obsidian Royalty Ring",
-        category: "ring",
-        price: 8900,
-        description: "A bold, dark obsidian center stone crowned with delicate gold filigree.",
-        imagePath: "images/jewelry/rings/obsidian_royalty.jpg"
+        name: "ROYAL EMERALD BRACELET",
+        category: "bracelet",
+        price: 6800,
+        description: "A delicate fusion of emeralds and gold, crafted for timeless elegance.",
+        imagePath: "images/jewelry/bracelets/royal_emerald.jpg"
     },
     {
         id: "j4",
-        name: "Starlight Sapphire Bracelet",
-        category: "bracelet",
-        price: 15600,
-        description: "Midnight blue sapphires alternating with bright white diamonds on a platinum chain.",
-        imagePath: "images/jewelry/bracelets/starlight_sapphire.jpg"
-    },
-    {
-        id: "j5",
-        name: "The Sovereign Solitaire",
-        category: "ring",
-        price: 24000,
-        description: "An awe-inspiring 3-carat flawless diamond perched upon a cathedral setting.",
-        imagePath: "images/jewelry/rings/sovereign_solitaire.jpg"
-    },
-    {
-        id: "j6",
-        name: "Velvet Choker with Pearl Drop",
-        category: "necklace",
-        price: 2100,
-        description: "Luxurious black velvet ribbon featuring a single, lustrous South Sea pearl.",
-        imagePath: "images/jewelry/necklaces/velvet_pearl.jpg"
+        name: "THE ETERNAL DROP EARRINGS",
+        category: "earring",
+        price: 7900,
+        description: "Brilliant diamonds in a graceful drop design, crafted in 18k gold.",
+        imagePath: "images/jewelry/earrings/eternal_drop.jpg"
     }
 ];
 
 // App State
 let cart = JSON.parse(localStorage.getItem('sys_cart')) || [];
 let wishlist = JSON.parse(localStorage.getItem('sys_wishlist')) || [];
+let currentCategory = 'all';
 
 const gridElement = document.getElementById('products-grid');
 const searchInput = document.getElementById('search-input');
 const priceFilter = document.getElementById('price-filter');
-const catFilters = document.querySelectorAll('.cat-filter');
+const catFilterDropdown = document.getElementById('cat-filter');
+const sortFilter = document.getElementById('sort-filter');
+const countElement = document.getElementById('results-count');
+const tabs = document.querySelectorAll('.tab-btn');
+const clearBtn = document.getElementById('clear-filters');
 
 function updateHeaderCounts() {
     document.getElementById('nav-bag').textContent = `BAG (${cart.length})`;
@@ -70,9 +59,10 @@ function formatPrice(price) {
 
 function renderProducts(products) {
     gridElement.innerHTML = '';
+    countElement.textContent = `${products.length} PIECES`;
     
     if (products.length === 0) {
-        gridElement.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted);">No products match your criteria.</p>';
+        gridElement.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 4rem 0;">No products match your criteria.</p>';
         return;
     }
 
@@ -83,12 +73,11 @@ function renderProducts(products) {
         card.className = 'product-card';
         card.innerHTML = `
             <div class="product-image-container">
-                <!-- Placeholder black block; when user adds image to folder, it will load -->
                 <div class="image-placeholder">
                     <img src="${product.imagePath}" alt="${product.name}" onerror="this.style.display='none'">
                 </div>
                 <button class="wishlist-btn ${isInWishlist ? 'active' : ''}" data-id="${product.id}">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="${isInWishlist ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78v0z"/></svg>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="${isInWishlist ? 'var(--accent)' : 'none'}" stroke="var(--accent)" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78v0z"/></svg>
                 </button>
             </div>
             <div class="product-info">
@@ -96,14 +85,14 @@ function renderProducts(products) {
                 <p class="product-desc">${product.description}</p>
                 <div class="product-bottom">
                     <span class="product-price">${formatPrice(product.price)}</span>
-                    <button class="add-cart-btn btn btn-primary" data-id="${product.id}">ADD TO BAG</button>
+                    <button class="add-cart-btn" data-id="${product.id}">ADD TO BAG &rarr;</button>
                 </div>
             </div>
         `;
         gridElement.appendChild(card);
     });
 
-    // Attach listeners to new buttons
+    // Attach listeners
     document.querySelectorAll('.add-cart-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
             const id = e.target.dataset.id;
@@ -112,13 +101,14 @@ function renderProducts(products) {
             localStorage.setItem('sys_cart', JSON.stringify(cart));
             updateHeaderCounts();
             
-            // Visual feedback
-            const originalText = e.target.textContent;
-            e.target.textContent = "ADDED!";
+            const originalText = e.target.innerHTML;
+            e.target.innerHTML = "ADDED! &check;";
             e.target.style.backgroundColor = "var(--accent)";
+            e.target.style.color = "var(--bg-dark)";
             setTimeout(() => {
-                e.target.textContent = originalText;
+                e.target.innerHTML = originalText;
                 e.target.style.backgroundColor = "transparent";
+                e.target.style.color = "var(--accent)";
             }, 1000);
         });
     });
@@ -136,7 +126,7 @@ function renderProducts(products) {
             } else {
                 wishlist.push(product);
                 e.currentTarget.classList.add('active');
-                e.currentTarget.querySelector('svg').setAttribute('fill', 'currentColor');
+                e.currentTarget.querySelector('svg').setAttribute('fill', 'var(--accent)');
             }
             
             localStorage.setItem('sys_wishlist', JSON.stringify(wishlist));
@@ -148,36 +138,60 @@ function renderProducts(products) {
 function filterAndSort() {
     let filtered = jewelryDatabase;
 
-    // Search filter
     const searchTerm = searchInput.value.toLowerCase();
     if (searchTerm) {
         filtered = filtered.filter(p => p.name.toLowerCase().includes(searchTerm) || p.description.toLowerCase().includes(searchTerm));
     }
 
-    // Category filter
-    const activeCategories = Array.from(catFilters).filter(cb => cb.checked).map(cb => cb.value);
-    filtered = filtered.filter(p => activeCategories.includes(p.category));
+    if (currentCategory !== 'all') {
+        filtered = filtered.filter(p => p.category === currentCategory);
+    }
+    
+    if (catFilterDropdown.value !== 'all' && currentCategory === 'all') {
+        filtered = filtered.filter(p => p.category === catFilterDropdown.value);
+    }
 
-    // Price range filter
     const priceVal = priceFilter.value;
     if (priceVal === 'under-5000') filtered = filtered.filter(p => p.price < 5000);
     if (priceVal === 'over-5000') filtered = filtered.filter(p => p.price >= 5000);
 
-    // Sorting
-    if (priceVal === 'low-high') {
+    const sortVal = sortFilter.value;
+    if (sortVal === 'low-high') {
         filtered.sort((a, b) => a.price - b.price);
-    } else if (priceVal === 'high-low') {
+    } else if (sortVal === 'high-low') {
         filtered.sort((a, b) => b.price - a.price);
     }
 
     renderProducts(filtered);
 }
 
-// Event Listeners for Filters
+// Event Listeners
 searchInput.addEventListener('input', filterAndSort);
 priceFilter.addEventListener('change', filterAndSort);
-catFilters.forEach(cb => cb.addEventListener('change', filterAndSort));
+catFilterDropdown.addEventListener('change', filterAndSort);
+sortFilter.addEventListener('change', filterAndSort);
+
+tabs.forEach(tab => {
+    tab.addEventListener('click', (e) => {
+        tabs.forEach(t => t.classList.remove('active'));
+        e.target.classList.add('active');
+        currentCategory = e.target.dataset.cat;
+        catFilterDropdown.value = 'all'; // reset dropdown when tab clicked
+        filterAndSort();
+    });
+});
+
+clearBtn.addEventListener('click', () => {
+    searchInput.value = '';
+    priceFilter.value = 'all';
+    catFilterDropdown.value = 'all';
+    sortFilter.value = 'featured';
+    tabs.forEach(t => t.classList.remove('active'));
+    document.querySelector('.tab-btn[data-cat="all"]').classList.add('active');
+    currentCategory = 'all';
+    filterAndSort();
+});
 
 // Initial render
 updateHeaderCounts();
-renderProducts(jewelryDatabase);
+filterAndSort();
