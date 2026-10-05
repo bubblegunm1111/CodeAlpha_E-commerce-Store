@@ -92,6 +92,96 @@ const productsDatabase = [
         imagePath: "images/bags/sapphire_velvet.jpg",
         material: "velvet",
         rating: 4.9
+    },
+    // --- PERFUMES ---
+    {
+        id: "p1",
+        department: "perfumes",
+        name: "NOCTIS ÂME",
+        category: "extrait",
+        price: 850,
+        description: "A dark dramatic fragrance with notes of rare black rose, oud, and amber. Housed in a deep ruby red faceted flacon crowned with gold.",
+        imagePath: "images/perfumes/noctis_ame_perfume_1791234673542.jpg",
+        size: "100ml",
+        rating: 4.9
+    },
+    {
+        id: "p2",
+        department: "perfumes",
+        name: "OUD IMPÉRIAL",
+        category: "eau_de_parfum",
+        price: 650,
+        description: "A commanding blend of smoky agarwood and dark spices, presented in a sleek black and gold bottle. For the bold and sophisticated.",
+        imagePath: "images/perfumes/oud_imperial_perfume_1791234683129.jpg",
+        size: "100ml",
+        rating: 4.8
+    },
+    {
+        id: "p3",
+        department: "perfumes",
+        name: "VELVET ROSE",
+        category: "eau_de_parfum",
+        price: 700,
+        description: "A rich, velvety rose absolute woven with hints of dark plum and patchouli, captured in a frosted burgundy bottle with a golden rose cap.",
+        imagePath: "images/perfumes/velvet_rose_perfume_1791234693127.jpg",
+        size: "75ml",
+        rating: 4.7
+    },
+    {
+        id: "p4",
+        department: "perfumes",
+        name: "ROYAL AMBER",
+        category: "extrait",
+        price: 900,
+        description: "Warm, opulent, and hypnotic. Pure golden amber resin surrounded by vanilla and benzoin. Encased in an amber glass bottle with intricate filigree.",
+        imagePath: "images/perfumes/royal_amber_perfume_1791234702129.jpg",
+        size: "100ml",
+        rating: 5.0
+    },
+    // --- EXCLUSIVE (ROYAL ESSENCE) ---
+    {
+        id: "e1",
+        department: "exclusive",
+        name: "THE CROWN JEWEL",
+        category: "heirloom",
+        price: 450000,
+        description: "A magnificent royal tiara handcrafted from solid gold, featuring an extraordinary central ruby surrounded by brilliant-cut diamonds.",
+        imagePath: "images/exclusive/crown_jewel_exclusive_1791234711561.jpg",
+        material: "gold",
+        rating: 5.0
+    },
+    {
+        id: "e2",
+        department: "exclusive",
+        name: "IMPERIAL SCEPTER PEN",
+        category: "accessory",
+        price: 18500,
+        description: "An extraordinary fountain pen crafted from 18k gold and adorned with rubies, designed for signing documents that shape history.",
+        imagePath: "images/exclusive/imperial_pen_exclusive_1791234720467.jpg",
+        material: "gold",
+        rating: 4.8
+    },
+    {
+        id: "e3",
+        department: "exclusive",
+        name: "ROYAL SIGNET RING",
+        category: "heirloom",
+        price: 24000,
+        description: "A massive, intricately carved gold signet ring featuring a polished black onyx stone. A symbol of undisputed authority.",
+        imagePath: "images/exclusive/signet_ring_exclusive_1791234733672.jpg",
+        material: "gold",
+        rating: 4.9
+    },
+    {
+        id: "e4",
+        department: "exclusive",
+        name: "THE KING'S CHESS SET",
+        category: "accessory",
+        price: 85000,
+        description: "A truly royal game. Solid gold and silver pieces with ruby and sapphire accents, played on a polished black and white marble board.",
+        imagePath: "images/exclusive/chess_set_exclusive_1791234743860.jpg",
+        material: "marble",
+        rating: 5.0
     }
 ];
 

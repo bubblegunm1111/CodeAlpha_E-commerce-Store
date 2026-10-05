@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signature Perfumes | SYS Royal Essence</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="navbar fouc-hidden" style="border-bottom: 1px solid var(--border-red); background-color: var(--bg-dark); position: sticky; top: 0; z-index: 100;">
+        <div class="logo">
+            <svg width="30" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M3 17h18v2H3z"/><path d="M4 15l2.5-8 3.5 4 2-6 2 6 3.5-4L20 15z"/>
+            </svg>
+            <span>SYS | ROYAL ESSENCE</span>
+        </div>
+        <nav class="nav-links">
+            <a href="index.html">SHOP</a>
+            <a href="index.html#categories">COLLECTIONS</a>
+            <a href="story.html">OUR STORY</a>
+        </nav>
+                <div class="nav-icons">
+            <a href="#" class="nav-icon" aria-label="Search">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+            </a>
+            <a href="#" class="nav-icon" aria-label="Wishlist">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78v0z"/></svg>
+                <span class="badge" id="nav-wishlist">0</span>
+            </a>
+            <a href="#" class="nav-icon" aria-label="Cart">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+                <span class="badge" id="nav-bag">0</span>
+            </a>
+        </div>
+    </header>
+
+    <main class="store-page fouc-hidden">
+        <div class="store-hero perfumes-hero">
+            <div class="breadcrumb"><a href="index.html">Home</a> / Perfumes</div>
+            <div class="hero-content">
+                <div class="kicker"><span class="line"></span> THE <span class="line"></span></div>
+                <h1 class="store-title">Signature Perfumes</h1>
+                <p class="store-subtitle">Exquisite craftsmanship for the modern royal.</p>
+            </div>
+        </div>
+
+        <div class="store-layout" style="display: block; padding: 2rem 4rem;">
+            <!-- Horizontal Filters -->
+            <div class="filters-bar" style="display: flex; gap: 1.5rem; margin-bottom: 3rem; flex-wrap: wrap; align-items: center; justify-content: space-between; padding: 1.5rem 0; border-bottom: 1px solid var(--border-red);">
+                <div class="filter-group-horizontal" style="display: flex; gap: 1rem; align-items: center; flex: 1;">
+                    <div class="search-box" style="position: relative;">
+                        <input type="text" id="search-input" placeholder="Search collection..." style="background: transparent; border: 1px solid var(--border-red); color: var(--text-cream); padding: 0.75rem 1rem 0.75rem 2.5rem; font-family: 'Montserrat', sans-serif; width: 250px;">
+                        <svg style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--text-muted);" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+                    </div>
+
+                    <select id="price-filter" class="filter-dropdown">
+                        <option value="all">PRICE (ALL)</option>
+                        <option value="under5k">UNDER $5,000</option>
+                        <option value="5k-10k">$5,000 - $10,000</option>
+                        <option value="over10k">OVER $10,000</option>
+                    </select>
+
+                    <select id="cat-filter" class="filter-dropdown">
+                        <option value="all">CATEGORY (ALL)</option>
+                        <option value="extrait">EXTRAIT DE PARFUM</option>
+                        <option value="eau_de_parfum">EAU DE PARFUM</option>
+                        <option value="eau_de_toilette">EAU DE TOILETTE</option>
+                    </select>
+                    
+                    <select id="material-filter" class="filter-dropdown">
+                        <option value="all">SIZE (ALL)</option>
+                        <option value="50ML">50ML</option>
+                        <option value="75ML">75ML</option>
+                        <option value="100ML">100ML</option>
+                    </select>
+
+                    <button id="clear-filters" style="background: transparent; border: none; color: var(--accent); font-size: 0.75rem; letter-spacing: 0.1em; cursor: pointer;">CLEAR ALL</button>
+                </div>
+
+                <div class="sort-group" style="display: flex; align-items: center; gap: 1rem;">
+                    <span id="results-count" style="font-size: 0.85rem; color: var(--text-muted);">4 RESULTS</span>
+                    <select id="sort-filter" class="filter-dropdown" style="border-color: var(--accent); color: var(--accent);">
+                        <option value="featured">SORT BY: FEATURED</option>
+                        <option value="price-low">PRICE: LOW TO HIGH</option>
+                        <option value="price-high">PRICE: HIGH TO LOW</option>
+                        <option value="name">NAME: A-Z</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Products Grid -->
+            <div class="products-grid" id="products-grid">
+                <!-- Injected via perfumes.js -->
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script>gsap.set(".fouc-hidden", { visibility: "visible", opacity: 1 });</script>
+    <script src="js/db.js"></script>
+    <script src="js/perfumes.js"></script>
+</body>
+</html>
