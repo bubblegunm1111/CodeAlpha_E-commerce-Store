@@ -9,4 +9,24 @@ document.addEventListener("DOMContentLoaded", () => {
       .from(".hero-cta .btn", { y: 20, opacity: 0, duration: 0.8, stagger: 0.2, ease: "power2.out" }, "-=0.6")
       .from(".perfume-stage", { opacity: 0, duration: 1.6, ease: "power2.out" }, "-=1.4")
       .from(".scroll-indicator", { opacity: 0, y: -20, duration: 1, ease: "power2.out" }, "-=0.5");
+
+    // Smooth scroll animations
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.15
+    };
+
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('.fade-up').forEach(element => {
+        observer.observe(element);
+    });
 });

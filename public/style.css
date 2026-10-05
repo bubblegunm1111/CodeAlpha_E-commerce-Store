@@ -236,6 +236,189 @@ h1, h2, h3, h4, h5, h6, .logo {
     background-color: var(--bg-dark);
 }
 
+/* Categories Section */
+.categories-section {
+    padding: 6rem 4rem;
+    max-width: 1600px;
+    margin: 0 auto;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.sub-heading {
+    display: inline-block;
+    font-size: 0.75rem;
+    letter-spacing: 0.25em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    position: relative;
+}
+
+.sub-heading::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 1px;
+    background-color: var(--accent);
+}
+
+.section-header h2 {
+    font-size: 3rem;
+    font-weight: 400;
+    margin-bottom: 1rem;
+    color: var(--text-cream);
+    margin-top: 1.5rem;
+}
+
+.section-header p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.categories-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+}
+
+.category-card {
+    display: block;
+    text-decoration: none;
+    border: 1px solid var(--border-red);
+    border-radius: 4px;
+    padding: 0.5rem;
+    background-color: transparent;
+    transition: all 0.4s ease;
+    color: var(--text-cream);
+}
+
+.category-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-5px);
+}
+
+.card-image {
+    width: 100%;
+    aspect-ratio: 1;
+    overflow: hidden;
+    border-radius: 2px;
+    margin-bottom: 1.5rem;
+}
+
+.card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+}
+
+.category-card:hover .card-image img {
+    transform: scale(1.05);
+}
+
+.card-content {
+    padding: 0 1rem 1.5rem;
+    text-align: left;
+}
+
+.card-content h3 {
+    font-size: 1.5rem;
+    font-weight: 400;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+}
+
+.sub-links {
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+}
+
+.shop-link {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    font-weight: 500;
+    color: var(--text-cream);
+    text-transform: uppercase;
+    transition: color 0.3s ease;
+}
+
+.shop-link .arrow {
+    margin-left: 0.5rem;
+    transition: transform 0.3s ease;
+}
+
+.category-card:hover .shop-link {
+    color: var(--accent);
+}
+
+.category-card:hover .shop-link .arrow {
+    transform: translateX(5px);
+}
+
+/* Info Bar */
+.info-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border-top: 1px solid var(--border-red);
+    border-bottom: 1px solid var(--border-red);
+    padding: 3rem 4rem;
+    background-color: var(--bg-dark);
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    border-right: 1px solid var(--border-red);
+}
+
+.info-item:last-child {
+    border-right: none;
+}
+
+.info-item svg {
+    color: var(--accent);
+}
+
+.info-text h4 {
+    font-size: 0.75rem;
+    font-family: 'Montserrat', sans-serif;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.25rem;
+    text-transform: uppercase;
+}
+
+.info-text p {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+/* Animation Classes */
+.fade-up {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
 /* Phones & small tablets */
 @media (max-width: 900px) {
     .navbar { padding: 1.25rem 1.5rem; }
@@ -253,4 +436,24 @@ h1, h2, h3, h4, h5, h6, .logo {
     .hero-cta { justify-content: center; flex-wrap: wrap; }
     .product-showcase { width: 100%; }
     .perfume-stage { height: 60vh; }
+    
+    .categories-section {
+        padding: 4rem 1.5rem;
+    }
+    .categories-grid {
+        grid-template-columns: 1fr;
+    }
+    .info-bar {
+        grid-template-columns: 1fr;
+        padding: 2rem 1.5rem;
+    }
+    .info-item {
+        border-right: none;
+        border-bottom: 1px solid var(--border-red);
+        padding: 1.5rem 0;
+        justify-content: flex-start;
+    }
+    .info-item:last-child {
+        border-bottom: none;
+    }
 }
