@@ -303,10 +303,12 @@ prism(facetedRect(BODY_W * 0.62, BODY_D * 0.72, BODY_C * 0.6), SH2, y - 0.01, MA
 y += SH2 - 0.01;
 
 // ---------- Crown cap ----------
+// Meshes go into `parent`: the bottle for fixed parts, the cap group for the crown.
+let parent = bottle;
 function addMesh(geo, mat, px = 0, py = 0, pz = 0) {
   const m = new THREE.Mesh(geo, mat);
   m.position.set(px, py, pz);
-  bottle.add(m);
+  parent.add(m);
   return m;
 }
 function ring(r, tube, py) {
@@ -320,9 +322,26 @@ const COLLAR_H = 0.07;
 addMesh(new THREE.CylinderGeometry(0.34, 0.38, COLLAR_H, 64), MAT.goldSmooth, 0, y + COLLAR_H / 2, 0);
 y += COLLAR_H;
 
-// Engraved band
+// Atomizer hidden under the crown — revealed when the cap lifts
+addMesh(new THREE.CylinderGeometry(0.13, 0.15, 0.13, 48), MAT.goldSmooth, 0, y + 0.065, 0);
+addMesh(new THREE.TorusGeometry(0.135, 0.012, 10, 48), MAT.goldSmooth, 0, y + 0.13, 0).rotation.x = Math.PI / 2;
+addMesh(new THREE.CylinderGeometry(0.085, 0.085, 0.08, 40), MAT.onyx, 0, y + 0.17, 0);
+addMesh(new THREE.CylinderGeometry(0.088, 0.088, 0.012, 40), MAT.goldSmooth, 0, y + 0.214, 0);
+addMesh(new THREE.CylinderGeometry(0.014, 0.014, 0.03, 12), MAT.goldSmooth, 0, y + 0.18, 0.085).rotation.x = Math.PI / 2;
+
+// Everything from here up belongs to the removable crown
+const cap = new THREE.Group();
+bottle.add(cap);
+parent = cap;
+
+// Engraved band (double-sided so the inside reads as solid metal when lifted)
 const BAND_H = 0.24, BAND_R_BOT = 0.4, BAND_R_TOP = 0.45;
-addMesh(new THREE.CylinderGeometry(BAND_R_TOP, BAND_R_BOT, BAND_H, 96, 1, true), MAT.gold, 0, y + BAND_H / 2, 0);
+const goldInside = MAT.gold.clone();
+goldInside.side = THREE.DoubleSide;
+addMesh(new THREE.CylinderGeometry(BAND_R_TOP, BAND_R_BOT, BAND_H, 96, 1, true), goldInside, 0, y + BAND_H / 2, 0);
+// Ceiling inside the crown, hides the open dome from below
+const ceiling = addMesh(new THREE.CircleGeometry(BAND_R_TOP, 64), MAT.goldSmooth, 0, y + BAND_H * 0.97, 0);
+ceiling.rotation.x = Math.PI / 2;
 ring(BAND_R_BOT + 0.01, 0.028, y + 0.01);
 ring(BAND_R_TOP, 0.026, y + BAND_H);
 
@@ -410,12 +429,12 @@ const DOME_R = 0.41, DOME_SY = 1.15;
   y += archH;
 }
 
-// Finial: collar, orb and cross
+// Finial: collar, orb and a small pointed tip (no cross)
 addMesh(new THREE.CylinderGeometry(0.07, 0.1, 0.05, 32), MAT.goldSmooth, 0, y + 0.01, 0);
 addMesh(new THREE.SphereGeometry(0.075, 32, 24), MAT.goldSmooth, 0, y + 0.1, 0);
 ring(0.077, 0.01, y + 0.1);
-addMesh(new THREE.BoxGeometry(0.035, 0.17, 0.035), MAT.goldSmooth, 0, y + 0.25, 0);
-addMesh(new THREE.BoxGeometry(0.12, 0.035, 0.035), MAT.goldSmooth, 0, y + 0.27, 0);
+addMesh(new THREE.ConeGeometry(0.025, 0.07, 16), MAT.goldSmooth, 0, y + 0.205, 0);
+parent = bottle;
 
 scene.add(bottle);
 
@@ -448,9 +467,22 @@ window.addEventListener('pointermove', (e) => {
   pointer.y = (e.clientY / window.innerHeight) * 2 - 1;
 });
 
+// Click the bottle to open / close the crown
+let manualOpen = null; // null = follow the automatic loop
+let manualUntil = 0;
+stage.style.cursor = 'pointer';
+stage.addEventListener('click', () => {
+  manualOpen = !(capOpen > 0.5);
+  manualUntil = clock.elapsedTime + 4;
+});
+
 const clock = new THREE.Clock();
 let idleSpin = 0;
 const INTRO = 2.2;
+
+// Cap loop: closed, then twists off and lifts, holds, and settles back
+const CAP_CYCLE = 9, CAP_OPEN_AT = 5, CAP_CLOSE_AT = 7.5, CAP_LIFT = 0.55;
+let capOpen = 0;
 
 function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
 
@@ -474,6 +506,20 @@ function tick() {
   bottle.rotation.y += (1 - e) * 0.25;
 
   shadow.material.opacity = e * (0.85 - Math.sin(t * 1.1) * 0.1);
+
+  // Crown open / close
+  let capTarget = 0;
+  if (manualOpen !== null && t < manualUntil) {
+    capTarget = manualOpen ? 1 : 0;
+  } else {
+    manualOpen = null;
+    const c = (t - INTRO) % CAP_CYCLE;
+    capTarget = t > INTRO && c > CAP_OPEN_AT && c < CAP_CLOSE_AT ? 1 : 0;
+  }
+  capOpen += (capTarget - capOpen) * Math.min(1, dt * 3);
+  const lift = capOpen * capOpen * (3 - 2 * capOpen); // smoothstep
+  cap.position.y = lift * CAP_LIFT + lift * Math.sin(t * 2.2) * 0.015;
+  cap.rotation.y = lift * Math.PI * 0.5; // unscrew twist
 
   cursorLight.position.set(pointer.x * 4, LOOK_Y - pointer.y * 3, 4);
 
