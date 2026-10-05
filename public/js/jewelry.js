@@ -47,7 +47,7 @@ function renderProducts(products) {
             </div>
             <div class="product-info" style="cursor: pointer;" onclick="window.location.href='product.html?id=${product.id}'">
                 <h3 class="product-title">${product.name}</h3>
-                <div class="product-bottom" style="margin-top: 1rem;">
+                <div class="product-bottom">
                     <span class="product-price">${formatPrice(product.price)}</span>
                 </div>
             </div>

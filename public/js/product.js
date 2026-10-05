@@ -100,7 +100,7 @@ if (!product) {
             </div>
             <div class="product-info">
                 <h3 class="product-title">${rel.name}</h3>
-                <div class="product-bottom" style="margin-top: 1rem;">
+                <div class="product-bottom">
                     <span class="product-price">${formatPrice(rel.price)}</span>
                     <button class="add-cart-btn" onclick="window.location.href='product.html?id=${rel.id}'">VIEW DETAILS</button>
                 </div>
