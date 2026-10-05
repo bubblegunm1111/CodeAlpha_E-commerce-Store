@@ -11,7 +11,6 @@ const priceFilter = document.getElementById('price-filter');
 const catFilterDropdown = document.getElementById('cat-filter');
 const sortFilter = document.getElementById('sort-filter');
 const countElement = document.getElementById('results-count');
-const tabs = document.querySelectorAll('.tab-btn');
 const clearBtn = document.getElementById('clear-filters');
 
 function updateHeaderCounts() {
@@ -116,23 +115,11 @@ priceFilter.addEventListener('change', filterAndSort);
 catFilterDropdown.addEventListener('change', filterAndSort);
 sortFilter.addEventListener('change', filterAndSort);
 
-tabs.forEach(tab => {
-    tab.addEventListener('click', (e) => {
-        tabs.forEach(t => t.classList.remove('active'));
-        e.target.classList.add('active');
-        currentCategory = e.target.dataset.cat;
-        catFilterDropdown.value = 'all'; // reset dropdown when tab clicked
-        filterAndSort();
-    });
-});
-
 clearBtn.addEventListener('click', () => {
     searchInput.value = '';
     priceFilter.value = 'all';
     catFilterDropdown.value = 'all';
     sortFilter.value = 'featured';
-    tabs.forEach(t => t.classList.remove('active'));
-    document.querySelector('.tab-btn[data-cat="all"]').classList.add('active');
     currentCategory = 'all';
     filterAndSort();
 });
