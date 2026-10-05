@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Élysée — Store</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Montserrat:wght@300;400;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #1A0A0B;
+            color: #EAD5CB;
+            font-family: 'Montserrat', sans-serif;
+            min-height: 100vh;
+        }
+
+        .store-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 80px 24px;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 72px;
+            text-align: center;
+            margin-bottom: 16px;
+            letter-spacing: 0.05em;
+            color: #EAD5CB;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #B7A6A0;
+            font-size: 16px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-bottom: 80px;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 32px;
+            margin-top: 48px;
+        }
+
+        .product-card {
+            background: rgba(139, 15, 30, 0.1);
+            border: 1px solid rgba(193, 142, 98, 0.2);
+            border-radius: 8px;
+            padding: 24px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(193, 142, 98, 0.5);
+            box-shadow: 0 12px 32px rgba(139, 15, 30, 0.3);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 320px;
+            background: rgba(193, 142, 98, 0.1);
+            border-radius: 4px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+        }
+
+        .product-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            margin-bottom: 8px;
+            color: #EAD5CB;
+        }
+
+        .product-category {
+            font-size: 12px;
+            color: #B7A6A0;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: 12px;
+        }
+
+        .product-price {
+            font-size: 20px;
+            color: #C18E62;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="store-container">
+        <h1>ÉLYSÉE</h1>
+        <p class="subtitle">Collection</p>
+
+        <div class="products-grid">
+            <div class="product-card">
+                <div class="product-image">🌹</div>
+                <p class="product-category">Fragrance</p>
+                <h3 class="product-name">Rose Noir</h3>
+                <p class="product-price">$249</p>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">💎</div>
+                <p class="product-category">Jewelry</p>
+                <h3 class="product-name">Ruby Essence Ring</h3>
+                <p class="product-price">$1,899</p>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">👑</div>
+                <p class="product-category">Jewelry</p>
+                <h3 class="product-name">Royal Crown Necklace</h3>
+                <p class="product-price">$2,499</p>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">🥃</div>
+                <p class="product-category">Fragrance</p>
+                <h3 class="product-name">Velvet Oud</h3>
+                <p class="product-price">$299</p>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">💍</div>
+                <p class="product-category">Jewelry</p>
+                <h3 class="product-name">Eternal Gold Band</h3>
+                <p class="product-price">$1,299</p>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">✨</div>
+                <p class="product-category">Fragrance</p>
+                <h3 class="product-name">Golden Hour</h3>
+                <p class="product-price">$199</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

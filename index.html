@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luxe — Premium E-Commerce</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #1A0A0B;
+            overflow: hidden;
+            font-family: 'Playfair Display', Georgia, serif;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Montserrat:wght@300;400;600&display=swap');
+
+        #canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .splash-content {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            text-align: center;
+            pointer-events: none;
+        }
+
+        .brand-title {
+            font-size: 96px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            color: #EAD5CB;
+            margin-bottom: 16px;
+            text-shadow: 0 4px 24px rgba(193, 142, 98, 0.4);
+            font-family: 'Playfair Display', serif;
+        }
+
+        .brand-subtitle {
+            font-size: 18px;
+            font-weight: 300;
+            letter-spacing: 0.25em;
+            color: #B7A6A0;
+            text-transform: uppercase;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .scroll-indicator {
+            position: fixed;
+            bottom: 48px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            z-index: 10;
+            pointer-events: none;
+            animation: floatUpDown 2s ease-in-out infinite;
+        }
+
+        .scroll-text {
+            color: #B7A6A0;
+            font-size: 14px;
+            letter-spacing: 0.15em;
+            margin-bottom: 12px;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .scroll-icon {
+            width: 24px;
+            height: 40px;
+            border: 2px solid rgba(193, 142, 98, 0.4);
+            border-radius: 12px;
+            position: relative;
+            margin: 0 auto;
+        }
+
+        .scroll-icon::before {
+            content: '';
+            width: 4px;
+            height: 8px;
+            background: #C18E62;
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+            animation: scrollDown 2s ease-in-out infinite;
+        }
+
+        @keyframes floatUpDown {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-10px); }
+        }
+
+        @keyframes scrollDown {
+            0% { top: 8px; opacity: 1; }
+            100% { top: 24px; opacity: 0; }
+        }
+
+        .transition-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #1A0A0B;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 1s ease;
+        }
+
+        .transition-overlay.active {
+            opacity: 1;
+        }
+
+        .loading-indicator {
+            position: fixed;
+            bottom: 120px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #6B4E44;
+            font-size: 14px;
+            letter-spacing: 0.1em;
+            z-index: 10;
+            font-family: 'Montserrat', sans-serif;
+            opacity: 0;
+            animation: fadeInOut 3s ease-in-out infinite;
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+
+        .cursor-follower {
+            position: fixed;
+            width: 200px;
+            height: 200px;
+            border: 1px solid rgba(193, 142, 98, 0.2);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 5;
+            transition: all 0.15s ease;
+            mix-blend-mode: lighten;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+
+    <div class="cursor-follower"></div>
+    <div class="transition-overlay"></div>
+
+    <div class="splash-content">
+        <h1 class="brand-title">ÉLYSÉE</h1>
+        <p class="brand-subtitle">Timeless Luxury</p>
+    </div>
+
+    <div class="loading-indicator">Move your cursor to explore</div>
+
+    <div class="scroll-indicator">
+        <p class="scroll-text">SCROLL</p>
+        <div class="scroll-icon"></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // Scene setup
+        const canvas = document.getElementById('canvas');
+        const scene = new THREE.Scene();
+        scene.fog = new THREE.Fog(0x1A0A0B, 10, 50);
+        scene.background = new THREE.Color(0x1A0A0B);
+
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 15;
+
+        const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+        // Mouse tracking with scroll detection
+        const mouse = { x: 0, y: 0, targetX: 0, targetY: 0 };
+        const cursorFollower = document.querySelector('.cursor-follower');
+        let scrollAmount = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouse.targetX = (e.clientX / window.innerWidth) * 2 - 1;
+            mouse.targetY = -(e.clientY / window.innerHeight) * 2 + 1;
+
+            cursorFollower.style.left = e.clientX - 100 + 'px';
+            cursorFollower.style.top = e.clientY - 100 + 'px';
+        });
+
+        // Scroll to enter
+        let lastScrollTime = Date.now();
+        document.addEventListener('wheel', (e) => {
+            const now = Date.now();
+            if (now - lastScrollTime < 100) return;
+            lastScrollTime = now;
+
+            scrollAmount += Math.abs(e.deltaY);
+
+            if (scrollAmount > 300) {
+                enterSite();
+            }
+        });
+
+        // Touch swipe for mobile
+        let touchStartY = 0;
+        document.addEventListener('touchstart', (e) => {
+            touchStartY = e.touches[0].clientY;
+        });
+
+        document.addEventListener('touchmove', (e) => {
+            const touchEndY = e.touches[0].clientY;
+            const deltaY = touchStartY - touchEndY;
+
+            if (Math.abs(deltaY) > 150) {
+                enterSite();
+            }
+        });
+
+        // Create floating perfume bottles and jewelry
+        const productObjects = [];
+
+        // Perfume bottle geometry - more realistic
+        function createPerfumeBottle() {
+            const group = new THREE.Group();
+
+            // Main bottle body - rounded rectangular shape
+            const bodyShape = new THREE.Shape();
+            bodyShape.moveTo(-0.4, 0);
+            bodyShape.lineTo(-0.4, 1.0);
+            bodyShape.quadraticCurveTo(-0.4, 1.2, -0.3, 1.2);
+            bodyShape.lineTo(0.3, 1.2);
+            bodyShape.quadraticCurveTo(0.4, 1.2, 0.4, 1.0);
+            bodyShape.lineTo(0.4, 0);
+            bodyShape.lineTo(-0.4, 0);
+
+            const extrudeSettings = {
+                depth: 0.3,
+                bevelEnabled: true,
+                bevelThickness: 0.05,
+                bevelSize: 0.05,
+                bevelSegments: 3
+            };
+
+            const bodyGeometry = new THREE.ExtrudeGeometry(bodyShape, extrudeSettings);
+            const bodyMaterial = new THREE.MeshPhysicalMaterial({
+                color: 0x8B0F1E,
+                metalness: 0,
+                roughness: 0.1,
+                transparent: true,
+                opacity: 0.7,
+                clearcoat: 1.0,
+                clearcoatRoughness: 0.05,
+                transmission: 0.3,
+                thickness: 0.5
+            });
+            const body = new THREE.Mesh(bodyGeometry, bodyMaterial);
+            body.position.z = -0.15;
+            group.add(body);
+
+            // Neck
+            const neckGeometry = new THREE.CylinderGeometry(0.15, 0.2, 0.3, 16);
+            const neckMaterial = new THREE.MeshPhysicalMaterial({
+                color: 0xEAD5CB,
+                metalness: 0,
+                roughness: 0.1,
+                transparent: true,
+                opacity: 0.85,
+                clearcoat: 1.0
+            });
+            const neck = new THREE.Mesh(neckGeometry, neckMaterial);
+            neck.position.y = 1.35;
+            group.add(neck);
+
+            // Cap - luxury gold
+            const capGeometry = new THREE.CylinderGeometry(0.2, 0.25, 0.35, 16);
+            const capMaterial = new THREE.MeshStandardMaterial({
+                color: 0xC18E62,
+                metalness: 1.0,
+                roughness: 0.2,
+                envMapIntensity: 1.5
+            });
+            const cap = new THREE.Mesh(capGeometry, capMaterial);
+            cap.position.y = 1.7;
+            group.add(cap);
+
+            // Cap top detail
+            const capTopGeometry = new THREE.CylinderGeometry(0.15, 0.2, 0.1, 16);
+            const capTop = new THREE.Mesh(capTopGeometry, capMaterial);
+            capTop.position.y = 1.92;
+            group.add(capTop);
+
+            // Label embossing
+            const labelGeometry = new THREE.BoxGeometry(0.6, 0.3, 0.05);
+            const labelMaterial = new THREE.MeshStandardMaterial({
+                color: 0xC18E62,
+                metalness: 0.8,
+                roughness: 0.3
+            });
+            const label = new THREE.Mesh(labelGeometry, labelMaterial);
+            label.position.set(0, 0.6, 0.18);
+            group.add(label);
+
+            return group;
+        }
+
+        // Diamond/Gem geometry - realistic cut
+        function createGem() {
+            const group = new THREE.Group();
+
+            // Main gem body with proper faceting
+            const gemGeometry = new THREE.OctahedronGeometry(0.5, 0);
+            const gemMaterial = new THREE.MeshPhysicalMaterial({
+                color: 0x8B0F1E,
+                metalness: 0,
+                roughness: 0,
+                transparent: true,
+                opacity: 0.92,
+                clearcoat: 1.0,
+                clearcoatRoughness: 0,
+                reflectivity: 1,
+                ior: 2.4,
+                transmission: 0.5,
+                thickness: 0.5
+            });
+            const gem = new THREE.Mesh(gemGeometry, gemMaterial);
+            group.add(gem);
+
+            // Add smaller accent gems
+            for (let i = 0; i < 3; i++) {
+                const smallGemGeometry = new THREE.OctahedronGeometry(0.15);
+                const smallGem = new THREE.Mesh(smallGemGeometry, gemMaterial);
+                const angle = (i / 3) * Math.PI * 2;
+                smallGem.position.x = Math.cos(angle) * 0.7;
+                smallGem.position.z = Math.sin(angle) * 0.7;
+                smallGem.position.y = -0.3;
+                group.add(smallGem);
+            }
+
+            return group;
+        }
+
+        // Ring geometry - detailed
+        function createRing() {
+            const group = new THREE.Group();
+
+            // Ring band with detail
+            const ringGeometry = new THREE.TorusGeometry(0.5, 0.08, 16, 64);
+            const ringMaterial = new THREE.MeshStandardMaterial({
+                color: 0xC18E62,
+                metalness: 1.0,
+                roughness: 0.15,
+                envMapIntensity: 1.5
+            });
+            const ring = new THREE.Mesh(ringGeometry, ringMaterial);
+            ring.rotation.x = Math.PI / 2;
+            group.add(ring);
+
+            // Center gem - larger and more prominent
+            const centerGemGeometry = new THREE.OctahedronGeometry(0.25);
+            const centerGemMaterial = new THREE.MeshPhysicalMaterial({
+                color: 0x8B0F1E,
+                metalness: 0,
+                roughness: 0,
+                transparent: true,
+                opacity: 0.95,
+                clearcoat: 1.0,
+                reflectivity: 1,
+                ior: 2.4,
+                transmission: 0.4
+            });
+            const centerGem = new THREE.Mesh(centerGemGeometry, centerGemMaterial);
+            centerGem.position.y = 0.35;
+            group.add(centerGem);
+
+            // Side gems
+            for (let i = 0; i < 4; i++) {
+                const sideGemGeometry = new THREE.OctahedronGeometry(0.08);
+                const sideGem = new THREE.Mesh(sideGemGeometry, centerGemMaterial);
+                const angle = (i / 4) * Math.PI * 2;
+                sideGem.position.x = Math.cos(angle) * 0.5;
+                sideGem.position.z = Math.sin(angle) * 0.5;
+                sideGem.position.y = 0.15;
+                group.add(sideGem);
+            }
+
+            // Ring setting/prongs
+            const prongGeometry = new THREE.CylinderGeometry(0.02, 0.02, 0.3, 8);
+            for (let i = 0; i < 4; i++) {
+                const prong = new THREE.Mesh(prongGeometry, ringMaterial);
+                const angle = (i / 4) * Math.PI * 2 + Math.PI / 4;
+                prong.position.x = Math.cos(angle) * 0.2;
+                prong.position.z = Math.sin(angle) * 0.2;
+                prong.position.y = 0.25;
+                group.add(prong);
+            }
+
+            return group;
+        }
+
+        // Create product instances
+        for (let i = 0; i < 15; i++) {
+            let product;
+            const type = i % 3;
+
+            if (type === 0) {
+                product = createPerfumeBottle();
+            } else if (type === 1) {
+                product = createGem();
+            } else {
+                product = createRing();
+            }
+
+            const angle = (i / 15) * Math.PI * 2;
+            const radius = 8 + Math.random() * 5;
+            product.position.x = Math.cos(angle) * radius;
+            product.position.y = (Math.random() - 0.5) * 10;
+            product.position.z = Math.sin(angle) * radius;
+
+            product.rotation.x = Math.random() * Math.PI;
+            product.rotation.y = Math.random() * Math.PI;
+
+            product.userData = {
+                originalY: product.position.y,
+                speed: 0.2 + Math.random() * 0.3,
+                rotationSpeed: 0.003 + Math.random() * 0.007
+            };
+
+            scene.add(product);
+            productObjects.push(product);
+        }
+
+        // Add decorative ornate frames
+        const frameGeometry = new THREE.TorusGeometry(1, 0.05, 8, 32);
+        const frameMaterial = new THREE.MeshStandardMaterial({
+            color: 0xC18E62,
+            metalness: 0.9,
+            roughness: 0.3,
+            emissive: 0xC18E62,
+            emissiveIntensity: 0.2
+        });
+
+        for (let i = 0; i < 6; i++) {
+            const frame = new THREE.Mesh(frameGeometry, frameMaterial);
+            const angle = (i / 6) * Math.PI * 2;
+            const radius = 12;
+            frame.position.x = Math.cos(angle) * radius;
+            frame.position.y = (Math.random() - 0.5) * 8;
+            frame.position.z = Math.sin(angle) * radius;
+
+            frame.userData = {
+                speed: 0.15 + Math.random() * 0.15,
+                originalY: frame.position.y,
+                rotationSpeed: 0.004
+            };
+
+            scene.add(frame);
+            productObjects.push(frame);
+        }
+
+        // Particles - rose petals and sparkles
+        const particleCount = 400;
+        const particleGeometry = new THREE.BufferGeometry();
+        const particlePositions = new Float32Array(particleCount * 3);
+
+        for (let i = 0; i < particleCount; i++) {
+            particlePositions[i * 3] = (Math.random() - 0.5) * 50;
+            particlePositions[i * 3 + 1] = (Math.random() - 0.5) * 50;
+            particlePositions[i * 3 + 2] = (Math.random() - 0.5) * 50;
+        }
+
+        particleGeometry.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
+
+        const particleMaterial = new THREE.PointsMaterial({
+            color: 0xC18E62,
+            size: 0.08,
+            transparent: true,
+            opacity: 0.5,
+            blending: THREE.AdditiveBlending
+        });
+
+        const particles = new THREE.Points(particleGeometry, particleMaterial);
+        scene.add(particles);
+
+        // Lighting - warm, dramatic luxury lighting
+        const ambientLight = new THREE.AmbientLight(0x3D1F1F, 0.3);
+        scene.add(ambientLight);
+
+        const pointLight1 = new THREE.PointLight(0xC18E62, 2, 35);
+        pointLight1.position.set(10, 10, 10);
+        scene.add(pointLight1);
+
+        const pointLight2 = new THREE.PointLight(0x8B0F1E, 1.8, 35);
+        pointLight2.position.set(-10, -10, 10);
+        scene.add(pointLight2);
+
+        const spotLight = new THREE.SpotLight(0xEAD5CB, 1.5);
+        spotLight.position.set(0, 15, 10);
+        spotLight.angle = Math.PI / 6;
+        spotLight.penumbra = 0.5;
+        scene.add(spotLight);
+
+        // Animation loop
+        let time = 0;
+        function animate() {
+            requestAnimationFrame(animate);
+            time += 0.01;
+
+            // Smooth mouse follow
+            mouse.x += (mouse.targetX - mouse.x) * 0.05;
+            mouse.y += (mouse.targetY - mouse.y) * 0.05;
+
+            // Camera follows mouse
+            camera.position.x += (mouse.x * 2 - camera.position.x) * 0.05;
+            camera.position.y += (mouse.y * 2 - camera.position.y) * 0.05;
+            camera.lookAt(scene.position);
+
+            // Animate product objects
+            productObjects.forEach((obj, i) => {
+                obj.rotation.x += obj.userData.rotationSpeed || 0.003;
+                obj.rotation.y += obj.userData.rotationSpeed || 0.003;
+
+                obj.position.y = obj.userData.originalY + Math.sin(time * obj.userData.speed + i) * 0.5;
+                obj.position.x += Math.sin(time * obj.userData.speed) * 0.01;
+                obj.position.z += Math.cos(time * obj.userData.speed) * 0.01;
+            });
+
+            // Rotate particles slowly
+            particles.rotation.y += 0.0003;
+            particles.rotation.x += 0.0002;
+
+            // Lights orbit - warm dramatic movement
+            pointLight1.position.x = Math.cos(time * 0.4) * 18;
+            pointLight1.position.z = Math.sin(time * 0.4) * 18;
+            pointLight1.position.y = Math.sin(time * 0.3) * 8;
+
+            pointLight2.position.x = Math.cos(time * 0.3 + Math.PI) * 15;
+            pointLight2.position.z = Math.sin(time * 0.3 + Math.PI) * 15;
+            pointLight2.position.y = Math.cos(time * 0.25) * 6;
+
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        // Handle resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // Enter site function
+        let isTransitioning = false;
+        function enterSite() {
+            if (isTransitioning) return;
+            isTransitioning = true;
+
+            const overlay = document.querySelector('.transition-overlay');
+            overlay.classList.add('active');
+
+            document.querySelector('.splash-content').style.transition = 'opacity 0.8s ease';
+            document.querySelector('.splash-content').style.opacity = '0';
+            document.querySelector('.scroll-indicator').style.transition = 'opacity 0.8s ease';
+            document.querySelector('.scroll-indicator').style.opacity = '0';
+            document.querySelector('.loading-indicator').style.opacity = '0';
+
+            setTimeout(() => {
+                window.location.href = '/store.html';
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
