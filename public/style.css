@@ -984,3 +984,32 @@ h1, h2, h3, h4, h5, h6, .logo {
         margin-bottom: 2rem;
     }
 }
+
+.filter-dropdown {
+    background-color: transparent;
+    color: var(--text-cream);
+    border: 1px solid var(--border-red);
+    padding: 0.75rem 2rem 0.75rem 1rem;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="%23c4a27a" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.filter-dropdown:hover, .filter-dropdown:focus {
+    border-color: var(--accent);
+}
+
+.filter-dropdown option {
+    background-color: var(--bg-dark);
+    color: var(--text-cream);
+    padding: 0.5rem;
+}
