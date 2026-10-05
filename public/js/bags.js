@@ -1,14 +1,11 @@
-// Database is now loaded from db.js
-
-// App State
 let cart = JSON.parse(localStorage.getItem('sys_cart')) || [];
 let wishlist = JSON.parse(localStorage.getItem('sys_wishlist')) || [];
-let currentCategory = 'all';
 
 const gridElement = document.getElementById('products-grid');
 const searchInput = document.getElementById('search-input');
 const priceFilter = document.getElementById('price-filter');
 const catFilterDropdown = document.getElementById('cat-filter');
+const materialFilterDropdown = document.getElementById('material-filter');
 const sortFilter = document.getElementById('sort-filter');
 const countElement = document.getElementById('results-count');
 const clearBtn = document.getElementById('clear-filters');
@@ -24,16 +21,15 @@ function formatPrice(price) {
 
 function renderProducts(products) {
     gridElement.innerHTML = '';
-    countElement.textContent = `${products.length} PIECES`;
-    
+    countElement.textContent = `${products.length} RESULT${products.length !== 1 ? 'S' : ''}`;
+
     if (products.length === 0) {
-        gridElement.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 4rem 0;">No products match your criteria.</p>';
+        gridElement.innerHTML = '<p style="color: var(--text-muted); grid-column: 1/-1; text-align: center; padding: 4rem 0;">No items match your criteria.</p>';
         return;
     }
 
     products.forEach(product => {
         const isInWishlist = wishlist.some(item => item.id === product.id);
-        
         const card = document.createElement('div');
         card.className = 'product-card';
         card.innerHTML = `
@@ -55,10 +51,9 @@ function renderProducts(products) {
         gridElement.appendChild(card);
     });
 
-    // Removed grid-level add to cart event listeners since it's now on the product page
-
     document.querySelectorAll('.wishlist-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
+            e.stopPropagation();
             const id = e.currentTarget.dataset.id;
             const product = productsDatabase.find(p => p.id === id);
             
@@ -72,7 +67,6 @@ function renderProducts(products) {
                 e.currentTarget.classList.add('active');
                 e.currentTarget.querySelector('svg').setAttribute('fill', 'var(--accent)');
             }
-            
             localStorage.setItem('sys_wishlist', JSON.stringify(wishlist));
             updateHeaderCounts();
         });
@@ -80,30 +74,44 @@ function renderProducts(products) {
 }
 
 function filterAndSort() {
-    let filtered = productsDatabase.filter(p => p.department === 'jewelry');
-
-    const searchTerm = searchInput.value.toLowerCase();
-    if (searchTerm) {
-        filtered = filtered.filter(p => p.name.toLowerCase().includes(searchTerm) || p.description.toLowerCase().includes(searchTerm));
-    }
-
-    if (currentCategory !== 'all') {
-        filtered = filtered.filter(p => p.category === currentCategory);
-    }
+    let filtered = productsDatabase.filter(p => p.department === 'bags');
     
-    if (catFilterDropdown.value !== 'all' && currentCategory === 'all') {
-        filtered = filtered.filter(p => p.category === catFilterDropdown.value);
+    // Search
+    const term = searchInput.value.toLowerCase();
+    if (term) {
+        filtered = filtered.filter(p => p.name.toLowerCase().includes(term) || p.description.toLowerCase().includes(term));
     }
 
-    const priceVal = priceFilter.value;
-    if (priceVal === 'under-5000') filtered = filtered.filter(p => p.price < 5000);
-    if (priceVal === 'over-5000') filtered = filtered.filter(p => p.price >= 5000);
+    // Category
+    const cat = catFilterDropdown.value;
+    if (cat !== 'all') {
+        filtered = filtered.filter(p => p.category === cat);
+    }
 
-    const sortVal = sortFilter.value;
-    if (sortVal === 'low-high') {
+    // Material
+    const mat = materialFilterDropdown.value;
+    if (mat !== 'all') {
+        filtered = filtered.filter(p => p.material === mat);
+    }
+
+    // Price
+    const priceRange = priceFilter.value;
+    if (priceRange === 'under5k') {
+        filtered = filtered.filter(p => p.price < 5000);
+    } else if (priceRange === '5k-10k') {
+        filtered = filtered.filter(p => p.price >= 5000 && p.price <= 10000);
+    } else if (priceRange === 'over10k') {
+        filtered = filtered.filter(p => p.price > 10000);
+    }
+
+    // Sort
+    const sortBy = sortFilter.value;
+    if (sortBy === 'price-low') {
         filtered.sort((a, b) => a.price - b.price);
-    } else if (sortVal === 'high-low') {
+    } else if (sortBy === 'price-high') {
         filtered.sort((a, b) => b.price - a.price);
+    } else if (sortBy === 'name') {
+        filtered.sort((a, b) => a.name.localeCompare(b.name));
     }
 
     renderProducts(filtered);
@@ -113,17 +121,18 @@ function filterAndSort() {
 searchInput.addEventListener('input', filterAndSort);
 priceFilter.addEventListener('change', filterAndSort);
 catFilterDropdown.addEventListener('change', filterAndSort);
+materialFilterDropdown.addEventListener('change', filterAndSort);
 sortFilter.addEventListener('change', filterAndSort);
 
 clearBtn.addEventListener('click', () => {
     searchInput.value = '';
     priceFilter.value = 'all';
     catFilterDropdown.value = 'all';
+    materialFilterDropdown.value = 'all';
     sortFilter.value = 'featured';
-    currentCategory = 'all';
     filterAndSort();
 });
 
-// Initial render
+// Init
 updateHeaderCounts();
 filterAndSort();

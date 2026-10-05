@@ -1,7 +1,8 @@
 // Shared Database
-const jewelryDatabase = [
+const productsDatabase = [
     {
         id: "j1",
+        department: "jewelry",
         name: "THE CRIMSON TEAR NECKLACE",
         category: "necklace",
         price: 12500,
@@ -13,6 +14,7 @@ const jewelryDatabase = [
     },
     {
         id: "j2",
+        department: "jewelry",
         name: "ETERNITY DIAMOND BAND",
         category: "ring",
         price: 4200,
@@ -24,6 +26,7 @@ const jewelryDatabase = [
     },
     {
         id: "j3",
+        department: "jewelry",
         name: "ROYAL EMERALD BRACELET",
         category: "bracelet",
         price: 6800,
@@ -35,6 +38,7 @@ const jewelryDatabase = [
     },
     {
         id: "j4",
+        department: "jewelry",
         name: "THE ETERNAL DROP EARRINGS",
         category: "earring",
         price: 7900,
@@ -43,6 +47,51 @@ const jewelryDatabase = [
         material: "gold",
         gemstone: "diamond",
         rating: 5.0
+    },
+    // --- BAGS ---
+    {
+        id: "b1",
+        department: "bags",
+        name: "THE MIDNIGHT QUILT",
+        category: "shoulder",
+        price: 8500,
+        description: "An exquisite black quilted leather shoulder bag featuring a prominent gold chain strap and the iconic interlocking gold clasp. Handcrafted from the finest calfskin leather for enduring luxury.",
+        imagePath: "images/bags/midnight_quilt.jpg",
+        material: "leather",
+        rating: 4.9
+    },
+    {
+        id: "b2",
+        department: "bags",
+        name: "IMPERIAL CRIMSON TOTE",
+        category: "tote",
+        price: 14200,
+        description: "A statement tote crafted from glossy deep crimson red crocodile leather. Finished with polished gold hardware and a spacious interior lined with lambskin.",
+        imagePath: "images/bags/crimson_tote.jpg",
+        material: "crocodile",
+        rating: 4.8
+    },
+    {
+        id: "b3",
+        department: "bags",
+        name: "THE GOLDEN ERA CLUTCH",
+        category: "clutch",
+        price: 4900,
+        description: "A stunning evening companion. This hard-case box clutch is rendered in metallic gold and adorned with subtle hand-placed crystals that catch every ambient light.",
+        imagePath: "images/bags/golden_clutch.jpg",
+        material: "metal",
+        rating: 4.7
+    },
+    {
+        id: "b4",
+        department: "bags",
+        name: "THE SAPPHIRE VELVET",
+        category: "shoulder",
+        price: 6300,
+        description: "A plush deep sapphire blue velvet shoulder bag featuring an elegant silver crest clasp and a delicate silver chain. Perfect for the modern evening affair.",
+        imagePath: "images/bags/sapphire_velvet.jpg",
+        material: "velvet",
+        rating: 4.9
     }
 ];
 

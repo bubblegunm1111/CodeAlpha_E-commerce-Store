@@ -566,6 +566,14 @@ h1, h2, h3, h4, h5, h6, .logo {
     background-color: var(--bg-dark);
 }
 
+.bags-hero {
+    background: 
+        linear-gradient(to right, var(--bg-dark) 0%, rgba(11,11,12,0.6) 30%, transparent 100%),
+        linear-gradient(to bottom, transparent 0%, rgba(11,11,12,0.5) 60%, var(--bg-dark) 100%),
+        url('images/bags_hero_bg.jpg') center / cover no-repeat;
+    background-color: var(--bg-dark);
+}
+
 .breadcrumb {
     text-align: left;
     font-size: 0.75rem;

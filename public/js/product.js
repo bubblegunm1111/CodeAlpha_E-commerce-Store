@@ -13,7 +13,7 @@ function formatPrice(price) {
 const params = new URLSearchParams(window.location.search);
 const productId = params.get('id');
 
-const product = jewelryDatabase.find(p => p.id === productId);
+const product = productsDatabase.find(p => p.id === productId);
 
 if (!product) {
     document.getElementById('detail-container').innerHTML = '<p>Product not found.</p>';
@@ -83,7 +83,7 @@ if (!product) {
     });
 
     // Render related
-    const related = jewelryDatabase.filter(p => p.id !== product.id).slice(0, 4);
+    const related = productsDatabase.filter(p => p.id !== product.id && p.department === product.department).slice(0, 4);
     const relatedGrid = document.getElementById('related-grid');
     related.forEach(rel => {
         const isRelWishlist = wishlist.some(item => item.id === rel.id);
