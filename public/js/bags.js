@@ -11,8 +11,8 @@ const countElement = document.getElementById('results-count');
 const clearBtn = document.getElementById('clear-filters');
 
 function updateHeaderCounts() {
-    document.getElementById('nav-bag').textContent = `BAG (${cart.length})`;
-    document.getElementById('nav-wishlist').textContent = `WISHLIST (${wishlist.length})`;
+    document.getElementById('nav-bag').textContent = cart.length;
+    document.getElementById('nav-wishlist').textContent = wishlist.length;
 }
 
 function formatPrice(price) {

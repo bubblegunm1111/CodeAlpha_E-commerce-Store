@@ -2,8 +2,8 @@ let cart = getCart();
 let wishlist = getWishlist();
 
 function updateHeaderCounts() {
-    document.getElementById('nav-bag').textContent = `BAG (${cart.length})`;
-    document.getElementById('nav-wishlist').textContent = `WISHLIST (${wishlist.length})`;
+    document.getElementById('nav-bag').textContent = cart.length;
+    document.getElementById('nav-wishlist').textContent = wishlist.length;
 }
 
 function formatPrice(price) {
@@ -43,7 +43,7 @@ if (!product) {
             </div>
 
             <div class="detail-actions">
-                <button class="add-cart-btn large-btn" id="add-to-bag-btn">ADD TO BAG &rarr;</button>
+                <button class="add-cart-btn large-btn" id="add-to-bag-btn">ADD TO CART &rarr;</button>
                 <button class="wishlist-detail-btn ${isInWishlist ? 'active' : ''}" id="add-to-wishlist-btn">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="${isInWishlist ? 'var(--accent)' : 'none'}" stroke="var(--accent)" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78v0z"/></svg>
                 </button>
@@ -57,7 +57,7 @@ if (!product) {
         updateHeaderCounts();
         
         const originalText = e.target.innerHTML;
-        e.target.innerHTML = "ADDED TO BAG &check;";
+        e.target.innerHTML = "ADDED TO CART &check;";
         e.target.style.backgroundColor = "var(--accent)";
         e.target.style.color = "var(--bg-dark)";
         setTimeout(() => {
