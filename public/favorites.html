@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Favorites | SYS Royal Essence</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="account-page">
+    <header class="navbar account-navbar">
+        <a class="logo" href="index.html" aria-label="SYS Royal Essence home"><svg width="30" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 17h18v2H3z"/><path d="M4 15l2.5-8 3.5 4 2-6 2 6 3.5-4L20 15z"/></svg><span>SYS | ROYAL ESSENCE</span></a>
+        <nav class="nav-links"><a href="index.html">SHOP</a><a href="index.html#categories">COLLECTIONS</a><a href="story.html">OUR STORY</a></nav>
+        <div class="nav-icons"><a href="favorites.html" class="nav-icon active" aria-label="Favorites"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78v0z"/></svg><span class="badge" id="nav-wishlist">0</span></a><a href="cart.html" class="nav-icon" aria-label="Cart"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 01-8 0"/></svg><span class="badge" id="nav-bag">0</span></a><a href="profile.html" class="nav-icon" aria-label="Profile"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="7" r="4"/><path d="M4 21a8 8 0 0116 0"/></svg></a></div>
+    </header>
+    <div class="sub-navbar"><span>YOUR PRIVATE ACCOUNT &middot; CURATED BY YOU &middot; SIGNATURE SERVICE</span></div>
+    <main class="account-main">
+        <aside class="account-rail"><div class="account-crest">✦</div><a class="account-rail-link" href="profile.html">PROFILE</a><a class="account-rail-link active" href="favorites.html">FAVORITES</a><button class="account-rail-link" id="account-signout" type="button">SIGN OUT</button></aside>
+        <section class="account-content"><div class="detail-kicker">YOUR PRIVATE COLLECTION</div><h1 class="account-title">MY FAVORITES</h1><div id="favorites-list" class="favorites-list"></div><div id="favorites-empty" class="account-empty" hidden><span>✦</span><h2>Your collection is waiting</h2><p>Save the pieces that feel worthy of your private selection.</p><a href="index.html#categories" class="checkout-btn">EXPLORE COLLECTIONS <span>&rarr;</span></a></div></section>
+    </main>
+    <script src="js/db.js"></script>
+    <script src="js/account.js"></script>
+    <script src="js/favorites.js"></script>
+</body>
+</html>

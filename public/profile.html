@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile | SYS Royal Essence</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="account-page">
+    <header class="navbar account-navbar">
+        <a class="logo" href="index.html" aria-label="SYS Royal Essence home">
+            <svg width="30" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 17h18v2H3z"/><path d="M4 15l2.5-8 3.5 4 2-6 2 6 3.5-4L20 15z"/></svg>
+            <span>SYS | ROYAL ESSENCE</span>
+        </a>
+        <nav class="nav-links"><a href="index.html">SHOP</a><a href="index.html#categories">COLLECTIONS</a><a href="story.html">OUR STORY</a></nav>
+        <div class="nav-icons">
+            <a href="favorites.html" class="nav-icon" aria-label="Favorites"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78v0z"/></svg><span class="badge" id="nav-wishlist">0</span></a>
+            <a href="cart.html" class="nav-icon" aria-label="Cart"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 01-8 0"/></svg><span class="badge" id="nav-bag">0</span></a>
+            <a href="profile.html" class="nav-icon active" aria-label="Profile"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="7" r="4"/><path d="M4 21a8 8 0 0116 0"/></svg></a>
+        </div>
+    </header>
+    <div class="sub-navbar"><span>YOUR PRIVATE ACCOUNT &middot; AUTHENTICITY GUARANTEED &middot; SIGNATURE SERVICE</span></div>
+    <main class="account-main">
+        <aside class="account-rail">
+            <div class="account-crest">✦</div>
+            <a class="account-rail-link active" href="profile.html">PROFILE</a>
+            <a class="account-rail-link" href="favorites.html">FAVORITES</a>
+            <button class="account-rail-link" id="account-signout" type="button">SIGN OUT</button>
+        </aside>
+        <section class="account-content">
+            <div class="detail-kicker">YOUR PRIVATE ACCOUNT</div>
+            <h1 class="account-title">MY PROFILE</h1>
+            <div id="profile-status" class="account-status" role="status"></div>
+            <form id="profile-form" class="profile-form">
+                <div class="checkout-field"><label for="profile-name">FULL NAME <span class="required-mark">*</span></label><input id="profile-name" name="name" autocomplete="name" required></div>
+                <div class="checkout-field"><label for="profile-email">EMAIL ADDRESS <span class="required-mark">*</span></label><input id="profile-email" name="email" type="email" autocomplete="email" required></div>
+                <div class="checkout-field"><label for="profile-phone">PHONE NUMBER <span class="required-mark">*</span></label><input id="profile-phone" name="phone" type="tel" autocomplete="tel" required></div>
+                <div class="checkout-field checkout-field-wide"><label for="profile-address">DELIVERY ADDRESS <span class="required-mark">*</span></label><textarea id="profile-address" name="address" rows="3" autocomplete="street-address" required></textarea></div>
+                <div class="checkout-field"><label for="profile-password">PASSWORD <span class="required-mark">*</span></label><div class="password-wrap"><input id="profile-password" name="password" type="password" minlength="8" autocomplete="new-password" required><button class="password-toggle" type="button" data-password-target="profile-password" aria-label="Show password">◉</button></div><small class="password-help">At least 8 characters, including one number.</small></div>
+                <button class="checkout-btn profile-submit" type="submit">SAVE CHANGES <span>&rarr;</span></button>
+            </form>
+        </section>
+    </main>
+    <script src="js/account.js"></script>
+</body>
+</html>
