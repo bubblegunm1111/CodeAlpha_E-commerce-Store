@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart | SYS Royal Essence</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="cart-page">
+    <header class="navbar cart-navbar">
+        <a class="logo" href="index.html" aria-label="SYS Royal Essence home">
+            <svg width="30" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                <path d="M3 17h18v2H3z"/><path d="M4 15l2.5-8 3.5 4 2-6 2 6 3.5-4L20 15z"/>
+            </svg>
+            <span>SYS | ROYAL ESSENCE</span>
+        </a>
+        <nav class="nav-links" aria-label="Main navigation">
+            <a href="index.html">SHOP</a>
+            <a href="index.html#categories">COLLECTIONS</a>
+            <a href="story.html">OUR STORY</a>
+        </nav>
+        <div class="nav-icons">
+            <a href="#" class="nav-icon" aria-label="Search">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+            </a>
+            <a href="#" class="nav-icon" aria-label="Wishlist">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78v0z"/></svg>
+                <span class="badge" id="nav-wishlist">0</span>
+            </a>
+            <a href="profile.html" class="nav-icon" aria-label="Profile">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="7" r="4"/><path d="M4 21a8 8 0 0116 0"/></svg>
+            </a>
+            <a href="cart.html" class="nav-icon active" aria-label="Cart">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+                <span class="badge" id="nav-bag">0</span>
+            </a>
+        </div>
+    </header>
+
+    <div class="sub-navbar">
+        <span>COMPLIMENTARY WORLDWIDE SHIPPING &middot; AUTHENTICITY GUARANTEED &middot; SIGNATURE GIFT WRAPPING</span>
+    </div>
+
+    <main class="cart-main">
+        <div class="cart-heading-row">
+            <div>
+                <div class="detail-kicker">YOUR PRIVATE SELECTION</div>
+                <h1 class="cart-title">YOUR CART</h1>
+            </div>
+            <div class="checkout-steps" aria-label="Checkout progress">
+                <button class="checkout-step active" type="button" data-step-target="cart"><span class="step-marker">1</span>CART</button>
+                <span class="step-line"></span>
+                <button class="checkout-step" type="button" data-step-target="information"><span class="step-marker">2</span>INFORMATION</button>
+                <span class="step-line"></span>
+                <button class="checkout-step" type="button" data-step-target="payment"><span class="step-marker">3</span>PAYMENT</button>
+            </div>
+        </div>
+
+        <div id="cart-step" class="checkout-view is-active">
+          <div class="cart-layout">
+            <section class="cart-items-panel" aria-labelledby="cart-items-heading">
+                <div class="cart-table-head">
+                    <span id="cart-items-heading">ITEM</span>
+                    <span>QUANTITY</span>
+                    <span>PRICE</span>
+                </div>
+                <div id="cart-items" class="cart-items"></div>
+                <div id="empty-cart" class="empty-cart" hidden>
+                    <span class="empty-mark">✦</span>
+                    <h2>Your cart is waiting</h2>
+                    <p>Discover a piece worthy of your private collection.</p>
+                    <a href="index.html#categories" class="btn btn-primary">CONTINUE SHOPPING &rarr;</a>
+                </div>
+                <a href="index.html#categories" class="continue-shopping">&larr; CONTINUE SHOPPING</a>
+            </section>
+
+            <aside class="order-summary" aria-labelledby="summary-heading">
+                <h2 id="summary-heading">ORDER SUMMARY</h2>
+                <div class="summary-row">
+                    <span>SUBTOTAL</span>
+                    <strong id="subtotal">$0.00</strong>
+                </div>
+                <div class="summary-row">
+                    <span>SHIPPING</span>
+                    <strong id="shipping">COMPLIMENTARY</strong>
+                </div>
+                <div class="summary-divider"></div>
+                <div class="summary-total">
+                    <span>TOTAL</span>
+                    <strong id="total">$0.00</strong>
+                </div>
+                <button id="checkout-toggle" class="checkout-btn" type="button">PROCEED TO CHECKOUT <span>&rarr;</span></button>
+                <p class="secure-note">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>
+                    Secure checkout
+                </p>
+            </aside>
+          </div>
+        </div>
+
+        <section id="information-step" class="checkout-view checkout-section" hidden aria-labelledby="information-heading">
+            <div class="checkout-intro">
+                <div class="detail-kicker">STEP TWO</div>
+                <h2 id="information-heading">DELIVERY DETAILS</h2>
+                <p>Tell us where to deliver your private selection. Your information is only used to prepare this order.</p>
+            </div>
+            <form id="information-form" class="checkout-form">
+                <div class="checkout-field">
+                    <label for="checkout-name">FULL NAME <span class="required-mark">*</span></label>
+                    <input id="checkout-name" name="name" type="text" autocomplete="name" required>
+                </div>
+                <div class="checkout-field">
+                    <label for="checkout-email">EMAIL ADDRESS <span class="required-mark">*</span></label>
+                    <input id="checkout-email" name="email" type="email" autocomplete="email" required>
+                </div>
+                <div class="checkout-field checkout-field-wide">
+                    <label for="checkout-address">DELIVERY ADDRESS <span class="required-mark">*</span></label>
+                    <input id="checkout-address" name="address" type="text" autocomplete="street-address" required>
+                </div>
+                <div class="checkout-field">
+                    <label for="checkout-apartment">APARTMENT / UNIT</label>
+                    <input id="checkout-apartment" name="apartment" type="text" autocomplete="address-line2">
+                </div>
+                <div class="checkout-field">
+                    <label for="checkout-city">CITY <span class="required-mark">*</span></label>
+                    <input id="checkout-city" name="city" type="text" autocomplete="address-level2" required>
+                </div>
+                <div class="checkout-field">
+                    <label for="checkout-region">STATE / REGION <span class="required-mark">*</span></label>
+                    <input id="checkout-region" name="region" type="text" autocomplete="address-level1" required>
+                </div>
+                <div class="checkout-field">
+                    <label for="checkout-country">COUNTRY <span class="required-mark">*</span></label>
+                    <input id="checkout-country" name="country" type="text" autocomplete="country-name" required>
+                </div>
+                <div class="checkout-field checkout-field-wide">
+                    <label for="checkout-postcode">POSTAL CODE <span class="required-mark">*</span></label>
+                    <input id="checkout-postcode" name="postcode" type="text" autocomplete="postal-code" required>
+                </div>
+                <div class="checkout-field checkout-field-wide">
+                    <label for="checkout-phone">PHONE NUMBER <span class="required-mark">*</span></label>
+                    <input id="checkout-phone" name="phone" type="tel" autocomplete="tel" required>
+                </div>
+                <div class="checkout-field checkout-field-wide">
+                    <label for="checkout-note">DELIVERY NOTE <span class="field-optional">OPTIONAL</span></label>
+                    <textarea id="checkout-note" name="note" rows="3" placeholder="A discreet note for our delivery team"></textarea>
+                </div>
+                <button class="checkout-btn checkout-submit" type="submit">CONTINUE TO PAYMENT <span>&rarr;</span></button>
+            </form>
+        </section>
+
+        <section id="payment-step" class="checkout-view payment-section" hidden aria-labelledby="payment-heading">
+            <div class="payment-card-column">
+                <div class="payment-card" id="payment-card" aria-label="Live payment card preview">
+                    <div class="payment-card-top">
+                        <div class="payment-card-brand-wrap"><span class="payment-card-crown">♔</span><span class="payment-card-brand">SYS</span></div>
+                        <span class="payment-card-type">ROYAL ESSENCE</span>
+                    </div>
+                    <div class="payment-chip"></div>
+                    <div class="payment-card-number" id="card-preview-number">•••• •••• •••• ••••</div>
+                    <div class="payment-card-crest" aria-hidden="true">✦</div>
+                    <div class="payment-card-bottom">
+                        <div><span>CARDHOLDER</span><strong id="card-preview-name">YOUR NAME</strong></div>
+                        <div><span>VALID THRU</span><strong id="card-preview-expiry">MM/YY</strong></div>
+                    </div>
+                </div>
+                <p class="secure-note"><span aria-hidden="true">⌁</span> Encrypted payment preview</p>
+            </div>
+            <div class="payment-form-column">
+                <div class="checkout-intro">
+                    <div class="detail-kicker">STEP THREE</div>
+                    <h2 id="payment-heading">PAYMENT DETAILS</h2>
+                    <p>Your card details remain in this session and are never stored by the demo storefront.</p>
+                </div>
+                <form id="payment-form" class="checkout-form">
+                    <div class="checkout-field checkout-field-wide">
+                        <label for="card-number">CARD NUMBER <span class="required-mark">*</span></label>
+                        <input id="card-number" name="cardNumber" inputmode="numeric" autocomplete="cc-number" placeholder="••••  ••••  ••••  ••••" maxlength="19" required>
+                    </div>
+                    <div class="checkout-field checkout-field-wide">
+                        <label for="card-name">CARDHOLDER NAME <span class="required-mark">*</span></label>
+                        <input id="card-name" name="cardName" autocomplete="cc-name" placeholder="YOUR NAME" maxlength="28" required>
+                    </div>
+                    <div class="checkout-field">
+                        <label for="card-expiry">EXPIRY DATE <span class="required-mark">*</span></label>
+                        <input id="card-expiry" name="expiry" inputmode="numeric" autocomplete="cc-exp" placeholder="MM/YY" maxlength="5" required>
+                    </div>
+                    <div class="checkout-field">
+                        <label for="card-cvv">CVV <span class="required-mark">*</span></label>
+                        <input id="card-cvv" name="cvv" inputmode="numeric" autocomplete="cc-csc" placeholder="•••" maxlength="4" required>
+                    </div>
+                    <button class="checkout-btn checkout-submit" type="submit">PAY SECURELY <span>⌁</span></button>
+                </form>
+                <p id="checkout-message" class="checkout-message" role="status" hidden></p>
+            </div>
+        </section>
+    </main>
+
+    <script src="js/db.js"></script>
+    <script src="js/cart.js"></script>
+</body>
+</html>
