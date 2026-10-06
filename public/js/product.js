@@ -73,6 +73,10 @@ if (!product) {
     `;
 
     document.getElementById('add-to-bag-btn').addEventListener('click', (e) => {
+        if (!localStorage.getItem('sys_user')) {
+            openAuthGate();
+            return;
+        }
         cart.push(product);
         localStorage.setItem('sys_cart', JSON.stringify(cart));
         updateHeaderCounts();
@@ -129,6 +133,79 @@ if (!product) {
         `;
         relatedGrid.appendChild(card);
     });
+}
+
+function openAuthGate() {
+    if (document.getElementById('auth-gate')) return;
+    const gate = document.createElement('div');
+    gate.id = 'auth-gate';
+    gate.className = 'auth-gate';
+    gate.innerHTML = `
+        <div class="auth-backdrop" data-auth-close></div>
+        <section class="auth-dialog" role="dialog" aria-modal="true" aria-labelledby="auth-title">
+            <button class="auth-close" type="button" aria-label="Close sign in dialog" data-auth-close>&times;</button>
+            <div class="detail-kicker">A PRIVATE COLLECTION AWAITS</div>
+            <h2 id="auth-title">SIGN IN TO CONTINUE</h2>
+            <p>Create an account or sign in before adding pieces to your private selection.</p>
+            <form id="auth-form" class="auth-form">
+                <label for="auth-email">EMAIL ADDRESS <span class="required-mark">*</span></label>
+                <input id="auth-email" type="email" autocomplete="email" required>
+                <label for="auth-password">PASSWORD <span class="required-mark">*</span></label>
+                <div class="password-wrap">
+                    <input id="auth-password" type="password" autocomplete="current-password" minlength="8" required>
+                    <button class="password-toggle" type="button" id="auth-password-toggle" aria-label="Show password">◉</button>
+                </div>
+                <small class="password-help">At least 8 characters, including one number.</small>
+                <p class="auth-error" id="auth-error" role="alert"></p>
+                <button class="checkout-btn" type="submit">SIGN IN & ADD TO CART <span>&rarr;</span></button>
+            </form>
+            <button class="auth-signup" type="button" id="auth-signup">NEW TO SYS? CREATE AN ACCOUNT</button>
+            <p class="auth-note">Demo storefront: your sign-in is kept only in this browser.</p>
+        </section>
+    `;
+    document.body.appendChild(gate);
+    const closeGate = () => gate.remove();
+    gate.querySelectorAll('[data-auth-close]').forEach(button => button.addEventListener('click', closeGate));
+    gate.querySelector('#auth-signup').addEventListener('click', () => {
+        gate.querySelector('#auth-title').textContent = 'CREATE YOUR ACCOUNT';
+        gate.querySelector('#auth-signup').textContent = 'ALREADY A MEMBER? SIGN IN';
+    });
+    gate.querySelector('#auth-password-toggle').addEventListener('click', () => {
+        const password = gate.querySelector('#auth-password');
+        const visible = password.type === 'password';
+        password.type = visible ? 'text' : 'password';
+        gate.querySelector('#auth-password-toggle').textContent = visible ? '◉' : '○';
+        gate.querySelector('#auth-password-toggle').setAttribute('aria-label', visible ? 'Hide password' : 'Show password');
+    });
+    gate.querySelector('#auth-form').addEventListener('submit', event => {
+        event.preventDefault();
+        const email = gate.querySelector('#auth-email');
+        const password = gate.querySelector('#auth-password');
+        const error = gate.querySelector('#auth-error');
+        if (!email.validity.valid) {
+            error.textContent = 'Please enter a valid email address.';
+            email.focus();
+            return;
+        }
+        if (password.value.length < 8 || !/\d/.test(password.value)) {
+            error.textContent = 'Use at least 8 characters and include one number.';
+            password.focus();
+            return;
+        }
+        error.textContent = '';
+        localStorage.setItem('sys_user', JSON.stringify({
+            email: email.value.trim(),
+            createdAt: new Date().toISOString()
+        }));
+        cart.push(product);
+        localStorage.setItem('sys_cart', JSON.stringify(cart));
+        updateHeaderCounts();
+        closeGate();
+        const button = document.getElementById('add-to-bag-btn');
+        button.innerHTML = 'ADDED TO CART &check;';
+        button.classList.add('auth-added');
+    });
+    gate.querySelector('#auth-email').focus();
 }
 
 updateHeaderCounts();
