@@ -41,9 +41,23 @@ if (profileForm) {
             return;
         }
         const data = Object.fromEntries(new FormData(profileForm));
-        localStorage.setItem('sys_profile', JSON.stringify(data));
-        localStorage.setItem('sys_user', JSON.stringify({ email: data.email, createdAt: new Date().toISOString() }));
-        document.getElementById('profile-status').textContent = 'Your profile has been updated.';
+        
+        // Save to backend database
+        fetch('/api/users', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        }).then(res => res.json()).then(result => {
+            if (result.success) {
+                localStorage.setItem('sys_profile', JSON.stringify(data));
+                localStorage.setItem('sys_user', JSON.stringify({ email: data.email, createdAt: new Date().toISOString() }));
+                document.getElementById('profile-status').textContent = 'Your profile has been saved to the database.';
+            } else {
+                document.getElementById('profile-status').textContent = 'Error saving profile: ' + result.error;
+            }
+        }).catch(err => {
+            document.getElementById('profile-status').textContent = 'Network error saving profile.';
+        });
     });
 }
 

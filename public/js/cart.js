@@ -165,11 +165,34 @@ paymentCard.addEventListener('pointerleave', () => {
 document.getElementById('payment-form').addEventListener('submit', event => {
     event.preventDefault();
     if (!event.target.checkValidity()) return;
+    
     const message = document.getElementById('checkout-message');
-    message.hidden = false;
-    message.textContent = 'Your order has been prepared for secure confirmation.';
-    setStoredCart([]);
-    renderCart();
+    const items = groupedCart().map(g => ({ id: g.product.id, quantity: g.quantity }));
+    const total = groupedCart().reduce((sum, g) => sum + g.product.price * g.quantity, 0);
+    
+    let userEmail = 'guest@example.com';
+    try {
+        const user = JSON.parse(localStorage.getItem('sys_user'));
+        if (user && user.email) userEmail = user.email;
+    } catch {}
+
+    fetch('/api/orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: userEmail, items, total })
+    }).then(res => res.json()).then(result => {
+        message.hidden = false;
+        if (result.success) {
+            message.textContent = `Order #${result.orderId} has been placed successfully!`;
+            setStoredCart([]);
+            renderCart();
+        } else {
+            message.textContent = 'Error processing order: ' + result.error;
+        }
+    }).catch(err => {
+        message.hidden = false;
+        message.textContent = 'Network error processing order.';
+    });
 });
 
 renderCart();
