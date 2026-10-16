@@ -7,6 +7,18 @@ function getStoredCart() {
 
 function setStoredCart(items) {
     localStorage.setItem('sys_cart', JSON.stringify(items));
+    // Persistent state engine sync with backend if token exists
+    const token = localStorage.getItem('sys_jwt');
+    if (token) {
+        fetch('/api/cart/sync', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ items })
+        }).catch(err => console.debug('Cart background sync note:', err));
+    }
 }
 
 function formatPrice(price) {
@@ -162,11 +174,14 @@ paymentCard.addEventListener('pointerleave', () => {
     paymentCard.style.transform = '';
 });
 
-document.getElementById('payment-form').addEventListener('submit', event => {
+document.getElementById('payment-form').addEventListener('submit', async event => {
     event.preventDefault();
     if (!event.target.checkValidity()) return;
     
     const message = document.getElementById('checkout-message');
+    const submitBtn = event.target.querySelector('button[type="submit"]');
+    const originalText = submitBtn.innerHTML;
+    
     const items = groupedCart().map(g => ({ id: g.product.id, quantity: g.quantity }));
     const total = groupedCart().reduce((sum, g) => sum + g.product.price * g.quantity, 0);
     
@@ -176,23 +191,64 @@ document.getElementById('payment-form').addEventListener('submit', event => {
         if (user && user.email) userEmail = user.email;
     } catch {}
 
-    fetch('/api/orders', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: userEmail, items, total })
-    }).then(res => res.json()).then(result => {
+    const token = localStorage.getItem('sys_jwt');
+    const authHeaders = {
+        'Content-Type': 'application/json',
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+    };
+
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = 'AUTHORIZING SANDBOX PAYMENT...';
+    message.hidden = true;
+
+    try {
+        // Step 1: Create Stripe Sandbox Payment Intent
+        const intentRes = await fetch('/api/payment/create-payment-intent', {
+            method: 'POST',
+            headers: authHeaders,
+            body: JSON.stringify({ amount: total, currency: 'usd', items })
+        });
+        const intentData = await intentRes.json();
+        if (!intentRes.ok || !intentData.success) {
+            throw new Error(intentData.error || 'Payment gateway initialization failed');
+        }
+
+        // Step 2: Finalize transaction and execute inventory adjustments
+        submitBtn.innerHTML = 'FINALIZING ORDER & STOCK...';
+        const orderRes = await fetch('/api/orders', {
+            method: 'POST',
+            headers: authHeaders,
+            body: JSON.stringify({
+                email: userEmail,
+                items,
+                total,
+                paymentIntentId: intentData.paymentIntentId
+            })
+        });
+
+        const orderData = await orderRes.json();
         message.hidden = false;
-        if (result.success) {
-            message.textContent = `Order #${result.orderId} has been placed successfully!`;
+
+        if (orderRes.ok && orderData.success) {
+            message.style.color = 'var(--accent)';
+            message.textContent = `Payment Cleared! Redirecting to your Order Confirmation #${orderData.orderId}...`;
             setStoredCart([]);
             renderCart();
+            setTimeout(() => {
+                window.location.href = `confirmation.html?orderId=${orderData.orderId}`;
+            }, 1200);
         } else {
-            message.textContent = 'Error processing order: ' + result.error;
+            message.style.color = '#e57373';
+            message.textContent = orderData.error || 'Failed to place order.';
         }
-    }).catch(err => {
+    } catch (err) {
         message.hidden = false;
-        message.textContent = 'Network error processing order.';
-    });
+        message.style.color = '#e57373';
+        message.textContent = err.message || 'Payment pipeline encountered an error.';
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalText;
+    }
 });
 
 renderCart();

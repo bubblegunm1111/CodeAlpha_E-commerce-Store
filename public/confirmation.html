@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation | SYS Royal Essence</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .confirmation-page {
+            min-height: 100vh;
+            background:
+                linear-gradient(rgba(11, 11, 12, 0.92), rgba(11, 11, 12, 0.95)),
+                url('images/burgundy_fabric_bg_1791239164998.jpg') center / cover fixed;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .confirmation-container {
+            width: min(100% - 3rem, 880px);
+            margin: 4rem auto 6rem;
+            background: rgba(18, 14, 16, 0.85);
+            border: 1px solid var(--border-red);
+            padding: 3.5rem;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7);
+            position: relative;
+        }
+
+        .confirmation-container::before {
+            content: '';
+            position: absolute;
+            inset: 6px;
+            border: 1px solid rgba(196, 162, 122, 0.2);
+            pointer-events: none;
+        }
+
+        .success-seal {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            border-radius: 50%;
+            border: 2px solid var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(196, 162, 122, 0.1);
+            color: var(--accent);
+            box-shadow: 0 0 30px rgba(196, 162, 122, 0.25);
+            animation: pulse-gold 2.5s infinite;
+        }
+
+        @keyframes pulse-gold {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 25px rgba(196, 162, 122, 0.25); }
+            50% { transform: scale(1.04); box-shadow: 0 0 45px rgba(196, 162, 122, 0.45); }
+        }
+
+        .confirmation-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .confirmation-kicker {
+            font-size: 0.72rem;
+            letter-spacing: 0.28em;
+            color: var(--accent);
+            text-transform: uppercase;
+            margin-bottom: 0.75rem;
+        }
+
+        .confirmation-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.75rem;
+            font-weight: 400;
+            color: var(--text-cream);
+            margin-bottom: 0.75rem;
+            letter-spacing: 0.04em;
+        }
+
+        .confirmation-subtitle {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            max-width: 580px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .order-meta-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            padding: 1.75rem 2rem;
+            background: rgba(11, 11, 12, 0.65);
+            border: 1px solid var(--border-red);
+            margin-bottom: 3rem;
+        }
+
+        .meta-col span {
+            display: block;
+            font-size: 0.65rem;
+            letter-spacing: 0.15em;
+            color: var(--text-muted);
+            margin-bottom: 0.35rem;
+            text-transform: uppercase;
+        }
+
+        .meta-col strong {
+            font-size: 0.92rem;
+            color: var(--text-cream);
+            font-weight: 500;
+            word-break: break-all;
+        }
+
+        .order-section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            color: var(--text-cream);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .order-section-title::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid var(--border-red);
+        }
+
+        .order-items-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 2.5rem;
+        }
+
+        .order-items-table th {
+            text-align: left;
+            font-size: 0.68rem;
+            letter-spacing: 0.15em;
+            color: var(--text-muted);
+            padding: 0.85rem 1rem;
+            border-bottom: 1px solid var(--border-red);
+        }
+
+        .order-items-table td {
+            padding: 1.25rem 1rem;
+            border-bottom: 1px solid rgba(196, 162, 122, 0.1);
+            color: var(--text-cream);
+            font-size: 0.9rem;
+        }
+
+        .order-item-desc {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .order-breakdown {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-red);
+        }
+
+        .payment-security-badge {
+            background: rgba(196, 162, 122, 0.05);
+            border: 1px solid rgba(196, 162, 122, 0.2);
+            padding: 1.5rem;
+            font-size: 0.82rem;
+            line-height: 1.6;
+            color: var(--text-muted);
+        }
+
+        .payment-security-badge strong {
+            color: var(--accent);
+            display: block;
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.1em;
+            font-size: 0.75rem;
+        }
+
+        .summary-totals {
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.88rem;
+            color: var(--text-muted);
+        }
+
+        .summary-row.total-row {
+            border-top: 1px solid var(--accent);
+            padding-top: 1rem;
+            margin-top: 0.5rem;
+            font-size: 1.3rem;
+            font-family: 'Playfair Display', serif;
+            color: var(--accent);
+        }
+
+        .confirmation-actions {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-top: 3rem;
+        }
+
+        .btn-gold {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.1rem 2.5rem;
+            background: var(--accent);
+            color: var(--bg-dark);
+            text-decoration: none;
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.14em;
+            transition: all 0.3s ease;
+        }
+
+        .btn-gold:hover {
+            background: #d4b58e;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(196, 162, 122, 0.3);
+        }
+
+        .btn-outline {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.1rem 2.5rem;
+            background: transparent;
+            border: 1px solid var(--border-red);
+            color: var(--text-cream);
+            text-decoration: none;
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.14em;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        @media (max-width: 768px) {
+            .confirmation-container {
+                padding: 2rem 1.5rem;
+            }
+            .order-meta-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .order-breakdown {
+                grid-template-columns: 1fr;
+            }
+            .confirmation-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body class="confirmation-page">
+    <header class="navbar" style="border-bottom: 1px solid var(--border-red); background-color: var(--bg-dark); position: sticky; top: 0; z-index: 100;">
+        <a class="logo" href="index.html" aria-label="SYS Royal Essence home" style="text-decoration: none; color: inherit;">
+            <svg width="30" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M3 17h18v2H3z"/><path d="M4 15l2.5-8 3.5 4 2-6 2 6 3.5-4L20 15z"/>
+            </svg>
+            <span>SYS | ROYAL ESSENCE</span>
+        </a>
+        <nav class="nav-links">
+            <a href="index.html">SHOP</a>
+            <a href="index.html#categories">COLLECTIONS</a>
+            <a href="story.html">OUR STORY</a>
+        </nav>
+        <div class="nav-icons">
+            <a href="favorites.html" class="nav-icon" aria-label="Wishlist">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78v0z"/></svg>
+                <span class="badge" id="nav-wishlist">0</span>
+            </a>
+            <a href="cart.html" class="nav-icon" aria-label="Cart">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+                <span class="badge" id="nav-bag">0</span>
+            </a>
+            <a href="profile.html" class="nav-icon" aria-label="Profile">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="7" r="4"/><path d="M4 21a8 8 0 0116 0"/></svg>
+            </a>
+        </div>
+    </header>
+    <div class="sub-navbar">
+        <span>ORDER CONFIRMED &middot; AUTHENTICITY CERTIFIED &middot; COMPLIMENTARY INSURED COURIER</span>
+    </div>
+
+    <main>
+        <div class="confirmation-container" id="confirmation-content">
+            <div class="success-seal">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+            </div>
+
+            <div class="confirmation-header">
+                <div class="confirmation-kicker">PAYMENT ACQUIRED & VERIFIED</div>
+                <h1 class="confirmation-title">THANK YOU FOR YOUR PATRONAGE</h1>
+                <p class="confirmation-subtitle">Your private luxury selection has been reserved and your order is currently undergoing white-glove packaging.</p>
+            </div>
+
+            <div class="order-meta-grid">
+                <div class="meta-col">
+                    <span>Order Number</span>
+                    <strong id="meta-order-id">#---</strong>
+                </div>
+                <div class="meta-col">
+                    <span>Date & Time</span>
+                    <strong id="meta-order-date">---</strong>
+                </div>
+                <div class="meta-col">
+                    <span>Payment Status</span>
+                    <strong id="meta-order-payment" style="color: var(--accent);">SUCCEEDED</strong>
+                </div>
+                <div class="meta-col">
+                    <span>Payment Intent</span>
+                    <strong id="meta-order-pi">pi_sandbox_---</strong>
+                </div>
+            </div>
+
+            <h2 class="order-section-title">RESERVED ACQUISITIONS</h2>
+            <table class="order-items-table">
+                <thead>
+                    <tr>
+                        <th>ITEM</th>
+                        <th style="text-align: center;">QUANTITY</th>
+                        <th style="text-align: right;">PRICE</th>
+                        <th style="text-align: right;">TOTAL</th>
+                    </tr>
+                </thead>
+                <tbody id="order-items-body">
+                    <!-- Populated dynamically via JS -->
+                </tbody>
+            </table>
+
+            <div class="order-breakdown">
+                <div class="payment-security-badge">
+                    <strong>AUTHENTICATED STRIPE PAYMENT</strong>
+                    This transaction was securely cleared through the Stripe API sandbox pipeline. Your private receipt has been dispatched to <span id="meta-customer-email" style="color: var(--text-cream); font-weight: 500;"></span>.
+                    <br><br>
+                    <strong>SIGNATURE DELIVERY</strong>
+                    Includes complimentary insured global courier with signature handover.
+                </div>
+                <div class="summary-totals">
+                    <div class="summary-row">
+                        <span>Subtotal</span>
+                        <span id="summary-subtotal">$0.00</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Complimentary Worldwide Courier</span>
+                        <span style="color: var(--accent);">COMPLIMENTARY</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Royal Vault Insurance & Wrapping</span>
+                        <span style="color: var(--accent);">INCLUDED</span>
+                    </div>
+                    <div class="summary-row total-row">
+                        <span>Total Paid</span>
+                        <span id="summary-total">$0.00</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="confirmation-actions">
+                <a href="index.html" class="btn-gold">EXPLORE MORE COLLECTIONS &rarr;</a>
+                <a href="profile.html" class="btn-outline">VIEW ACCOUNT & ORDERS</a>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/db.js"></script>
+    <script>
+        function formatPrice(price) {
+            return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(price);
+        }
+
+        async function loadOrderDetails() {
+            const params = new URLSearchParams(window.location.search);
+            const orderId = params.get('orderId') || '1';
+            
+            try {
+                const res = await fetch(`/api/orders/${orderId}`);
+                const data = await res.json();
+                
+                if (!res.ok || !data.success || !data.order) {
+                    document.getElementById('confirmation-content').innerHTML = `
+                        <div style="text-align: center; padding: 4rem 1rem;">
+                            <h2 style="font-family: 'Playfair Display', serif; color: var(--accent); margin-bottom: 1rem;">Order #${orderId} Not Found</h2>
+                            <p style="color: var(--text-muted); margin-bottom: 2rem;">We could not retrieve this order's record.</p>
+                            <a href="index.html" class="btn-gold">RETURN TO STORE</a>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const order = data.order;
+                document.getElementById('meta-order-id').textContent = `#${order.id}`;
+                document.getElementById('meta-order-date').textContent = order.created_at ? new Date(order.created_at).toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' }) : new Date().toLocaleDateString();
+                document.getElementById('meta-order-payment').textContent = (order.payment_status || 'SUCCEEDED').toUpperCase();
+                document.getElementById('meta-order-pi').textContent = order.payment_id || 'pi_sandbox_verified';
+                document.getElementById('meta-customer-email').textContent = order.user_email;
+
+                const tbody = document.getElementById('order-items-body');
+                tbody.innerHTML = '';
+
+                let subtotal = 0;
+                (order.items || []).forEach(item => {
+                    const prod = (typeof productsDatabase !== 'undefined') ? productsDatabase.find(p => p.id === item.id) : null;
+                    const name = prod ? prod.name : (item.name || item.id);
+                    const price = prod ? prod.price : (item.price || (order.total / (item.quantity || 1)));
+                    const qty = item.quantity || 1;
+                    const lineTotal = price * qty;
+                    subtotal += lineTotal;
+
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>
+                            <strong>${name}</strong>
+                            <div class="order-item-desc">${prod ? prod.category.toUpperCase() : 'EXCLUSIVE COLLECTION'}</div>
+                        </td>
+                        <td style="text-align: center;">${qty}</td>
+                        <td style="text-align: right;">${formatPrice(price)}</td>
+                        <td style="text-align: right; font-weight: 600; color: var(--accent);">${formatPrice(lineTotal)}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+
+                document.getElementById('summary-subtotal').textContent = formatPrice(order.total);
+                document.getElementById('summary-total').textContent = formatPrice(order.total);
+
+            } catch (err) {
+                console.error('Error fetching order details:', err);
+            }
+        }
+
+        loadOrderDetails();
+    </script>
+</body>
+</html>

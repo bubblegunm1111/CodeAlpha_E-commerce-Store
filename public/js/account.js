@@ -1,3 +1,11 @@
+import { 
+    auth, 
+    signOut, 
+    onAuthStateChanged,
+    googleProvider,
+    signInWithPopup
+} from './firebase-config.js';
+
 function formatAccountPrice(price) {
     return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(price);
 }
@@ -9,6 +17,53 @@ function updateAccountCounts() {
     try { cart = JSON.parse(localStorage.getItem('sys_cart')) || []; } catch {}
     document.getElementById('nav-wishlist').textContent = wishlist.length;
     document.getElementById('nav-bag').textContent = cart.length;
+}
+
+onAuthStateChanged(auth, (user) => {
+    const googleBtnText = document.getElementById('profile-google-btn-text');
+    const emailInput = document.getElementById('profile-email');
+    const nameInput = document.getElementById('profile-name');
+    if (user) {
+        if (emailInput && !emailInput.value) emailInput.value = user.email || '';
+        if (nameInput && !nameInput.value && user.displayName) nameInput.value = user.displayName;
+        if (googleBtnText) {
+            googleBtnText.textContent = user.displayName ? `CONNECTED AS ${user.displayName.toUpperCase()}` : 'GOOGLE ACCOUNT CONNECTED';
+        }
+    } else {
+        if (googleBtnText) googleBtnText.textContent = 'SIGN IN WITH GOOGLE';
+    }
+});
+
+const profileGoogleBtn = document.getElementById('profile-google-btn');
+if (profileGoogleBtn) {
+    profileGoogleBtn.addEventListener('click', async () => {
+        const statusEl = document.getElementById('profile-status');
+        try {
+            const res = await signInWithPopup(auth, googleProvider);
+            const user = res.user;
+            localStorage.setItem('sys_user', JSON.stringify({
+                uid: user.uid,
+                email: user.email,
+                name: user.displayName || '',
+                photoURL: user.photoURL || '',
+                createdAt: user.metadata.creationTime || new Date().toISOString()
+            }));
+            const nameInput = document.getElementById('profile-name');
+            const emailInput = document.getElementById('profile-email');
+            if (nameInput && user.displayName) nameInput.value = user.displayName;
+            if (emailInput && user.email) emailInput.value = user.email;
+            if (statusEl) {
+                statusEl.textContent = `Signed in successfully with Google (${user.email}).`;
+                statusEl.style.color = 'var(--accent)';
+            }
+        } catch (err) {
+            console.error('Profile Google Auth error:', err);
+            if (statusEl) {
+                statusEl.textContent = err.message || 'Google sign-in was cancelled or failed.';
+                statusEl.style.color = '#e57373';
+            }
+        }
+    });
 }
 
 document.querySelectorAll('.password-toggle').forEach(toggle => {
@@ -61,9 +116,15 @@ if (profileForm) {
     });
 }
 
-document.getElementById('account-signout')?.addEventListener('click', () => {
+document.getElementById('account-signout')?.addEventListener('click', async () => {
+    try {
+        await signOut(auth);
+    } catch (e) {
+        console.error('Sign out error:', e);
+    }
     localStorage.removeItem('sys_user');
     window.location.href = 'index.html';
 });
 
 updateAccountCounts();
+

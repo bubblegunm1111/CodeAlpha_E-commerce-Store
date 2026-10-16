@@ -1,5 +1,24 @@
+import { 
+    auth, 
+    signInWithEmailAndPassword, 
+    createUserWithEmailAndPassword, 
+    onAuthStateChanged,
+    googleProvider,
+    signInWithPopup 
+} from './firebase-config.js';
+
 let cart = getCart();
 let wishlist = getWishlist();
+
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        localStorage.setItem('sys_user', JSON.stringify({
+            uid: user.uid,
+            email: user.email,
+            createdAt: user.metadata.creationTime || new Date().toISOString()
+        }));
+    }
+});
 
 function updateHeaderCounts() {
     document.getElementById('nav-bag').textContent = cart.length;
@@ -137,6 +156,7 @@ if (!product) {
 
 function openAuthGate() {
     if (document.getElementById('auth-gate')) return;
+    let isSignUpMode = false;
     const gate = document.createElement('div');
     gate.id = 'auth-gate';
     gate.className = 'auth-gate';
@@ -146,30 +166,60 @@ function openAuthGate() {
             <button class="auth-close" type="button" aria-label="Close sign in dialog" data-auth-close>&times;</button>
             <div class="detail-kicker">A PRIVATE COLLECTION AWAITS</div>
             <h2 id="auth-title">SIGN IN TO CONTINUE</h2>
-            <p>Create an account or sign in before adding pieces to your private selection.</p>
+            <p id="auth-subtitle">Create an account or sign in before adding pieces to your private selection.</p>
             <form id="auth-form" class="auth-form">
                 <label for="auth-email">EMAIL ADDRESS <span class="required-mark">*</span></label>
-                <input id="auth-email" type="email" autocomplete="email" required>
+                <input id="auth-email" type="email" autocomplete="email" placeholder="name@example.com" required>
                 <label for="auth-password">PASSWORD <span class="required-mark">*</span></label>
                 <div class="password-wrap">
-                    <input id="auth-password" type="password" autocomplete="current-password" minlength="8" required>
+                    <input id="auth-password" type="password" autocomplete="current-password" minlength="8" placeholder="••••••••" required>
                     <button class="password-toggle" type="button" id="auth-password-toggle" aria-label="Show password">◉</button>
                 </div>
                 <small class="password-help">At least 8 characters, including one number.</small>
                 <p class="auth-error" id="auth-error" role="alert"></p>
-                <button class="checkout-btn" type="submit">SIGN IN & ADD TO CART <span>&rarr;</span></button>
+                <button class="checkout-btn" id="auth-submit-btn" type="submit">SIGN IN & ADD TO CART <span>&rarr;</span></button>
             </form>
+
+            <div class="auth-divider">
+                <span>OR CONTINUE WITH</span>
+            </div>
+
+            <button class="auth-google-btn" type="button" id="auth-google-btn">
+                <svg width="18" height="18" viewBox="0 0 24 24">
+                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+                </svg>
+                <span>CONTINUE WITH GOOGLE</span>
+            </button>
+
             <button class="auth-signup" type="button" id="auth-signup">NEW TO SYS? CREATE AN ACCOUNT</button>
-            <p class="auth-note">Demo storefront: your sign-in is kept only in this browser.</p>
+            <p class="auth-note" style="color: var(--accent); opacity: 0.85;">🔒 Secured by Google Firebase</p>
         </section>
     `;
     document.body.appendChild(gate);
     const closeGate = () => gate.remove();
     gate.querySelectorAll('[data-auth-close]').forEach(button => button.addEventListener('click', closeGate));
-    gate.querySelector('#auth-signup').addEventListener('click', () => {
-        gate.querySelector('#auth-title').textContent = 'CREATE YOUR ACCOUNT';
-        gate.querySelector('#auth-signup').textContent = 'ALREADY A MEMBER? SIGN IN';
+    
+    const signupToggleBtn = gate.querySelector('#auth-signup');
+    const submitBtn = gate.querySelector('#auth-submit-btn');
+    const titleEl = gate.querySelector('#auth-title');
+    const googleBtn = gate.querySelector('#auth-google-btn');
+
+    signupToggleBtn.addEventListener('click', () => {
+        isSignUpMode = !isSignUpMode;
+        if (isSignUpMode) {
+            titleEl.textContent = 'CREATE YOUR ACCOUNT';
+            submitBtn.innerHTML = 'CREATE ACCOUNT & ADD TO CART <span>&rarr;</span>';
+            signupToggleBtn.textContent = 'ALREADY A MEMBER? SIGN IN';
+        } else {
+            titleEl.textContent = 'SIGN IN TO CONTINUE';
+            submitBtn.innerHTML = 'SIGN IN & ADD TO CART <span>&rarr;</span>';
+            signupToggleBtn.textContent = 'NEW TO SYS? CREATE AN ACCOUNT';
+        }
     });
+
     gate.querySelector('#auth-password-toggle').addEventListener('click', () => {
         const password = gate.querySelector('#auth-password');
         const visible = password.type === 'password';
@@ -177,33 +227,130 @@ function openAuthGate() {
         gate.querySelector('#auth-password-toggle').textContent = visible ? '◉' : '○';
         gate.querySelector('#auth-password-toggle').setAttribute('aria-label', visible ? 'Hide password' : 'Show password');
     });
-    gate.querySelector('#auth-form').addEventListener('submit', event => {
-        event.preventDefault();
-        const email = gate.querySelector('#auth-email');
-        const password = gate.querySelector('#auth-password');
+
+    // Google Sign-In Handler
+    googleBtn.addEventListener('click', async () => {
         const error = gate.querySelector('#auth-error');
-        if (!email.validity.valid) {
-            error.textContent = 'Please enter a valid email address.';
-            email.focus();
-            return;
-        }
-        if (password.value.length < 8 || !/\d/.test(password.value)) {
-            error.textContent = 'Use at least 8 characters and include one number.';
-            password.focus();
-            return;
-        }
         error.textContent = '';
-        localStorage.setItem('sys_user', JSON.stringify({
-            email: email.value.trim(),
-            createdAt: new Date().toISOString()
-        }));
-        cart.push(product);
-        localStorage.setItem('sys_cart', JSON.stringify(cart));
-        updateHeaderCounts();
-        closeGate();
-        const button = document.getElementById('add-to-bag-btn');
-        button.innerHTML = 'ADDED TO CART &check;';
-        button.classList.add('auth-added');
+        googleBtn.disabled = true;
+        googleBtn.style.opacity = '0.6';
+        try {
+            const result = await signInWithPopup(auth, googleProvider);
+            const user = result.user;
+            localStorage.setItem('sys_user', JSON.stringify({
+                uid: user.uid,
+                email: user.email,
+                name: user.displayName || '',
+                photoURL: user.photoURL || '',
+                createdAt: user.metadata.creationTime || new Date().toISOString()
+            }));
+
+            cart.push(product);
+            localStorage.setItem('sys_cart', JSON.stringify(cart));
+            updateHeaderCounts();
+            closeGate();
+
+            const button = document.getElementById('add-to-bag-btn');
+            button.innerHTML = 'ADDED TO CART &check;';
+            button.classList.add('auth-added');
+        } catch (err) {
+            console.error('Google Auth error:', err);
+            if (err.code === 'auth/popup-closed-by-user') {
+                error.textContent = 'Google sign-in popup closed before completing.';
+            } else if (err.code === 'auth/operation-not-allowed') {
+                error.textContent = 'Google sign-in is not enabled in Firebase Console. Please enable Google provider.';
+            } else {
+                error.textContent = err.message || 'Google sign-in failed.';
+            }
+        } finally {
+            googleBtn.disabled = false;
+            googleBtn.style.opacity = '1';
+        }
+    });
+
+    gate.querySelector('#auth-form').addEventListener('submit', async event => {
+        event.preventDefault();
+        const emailInput = gate.querySelector('#auth-email');
+        const passwordInput = gate.querySelector('#auth-password');
+        const error = gate.querySelector('#auth-error');
+
+        if (!emailInput.validity.valid) {
+            error.textContent = 'Please enter a valid email address.';
+            emailInput.focus();
+            return;
+        }
+        if (passwordInput.value.length < 8 || !/\d/.test(passwordInput.value)) {
+            error.textContent = 'Use at least 8 characters and include one number.';
+            passwordInput.focus();
+            return;
+        }
+
+        const email = emailInput.value.trim();
+        const password = passwordInput.value;
+        error.textContent = '';
+        submitBtn.disabled = true;
+        submitBtn.textContent = isSignUpMode ? 'CREATING ACCOUNT...' : 'SIGNING IN...';
+
+        try {
+            let userCredential;
+            if (isSignUpMode) {
+                userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            } else {
+                userCredential = await signInWithEmailAndPassword(auth, email, password);
+            }
+
+            const user = userCredential.user;
+            // Sync with backend API to issue JWT token & store in database
+            try {
+                const endpoint = isSignUpMode ? '/api/auth/register' : '/api/auth/login';
+                const authRes = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                const authData = await authRes.json();
+                if (authData.token) {
+                    localStorage.setItem('sys_jwt', authData.token);
+                }
+            } catch (backendAuthErr) {
+                console.debug('Backend JWT sync note:', backendAuthErr);
+            }
+
+            cart.push(product);
+            localStorage.setItem('sys_cart', JSON.stringify(cart));
+            // Trigger persistent cart sync
+            const token = localStorage.getItem('sys_jwt');
+            if (token) {
+                fetch('/api/cart/sync', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ items: cart })
+                }).catch(() => {});
+            }
+            updateHeaderCounts();
+            closeGate();
+
+            const button = document.getElementById('add-to-bag-btn');
+            button.innerHTML = 'ADDED TO CART &check;';
+            button.classList.add('auth-added');
+        } catch (err) {
+            console.error('Firebase Auth error:', err);
+            let message = err.message || 'Authentication failed.';
+            if (err.code === 'auth/email-already-in-use') {
+                message = 'An account already exists with this email. Try signing in.';
+            } else if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') {
+                message = 'Invalid email or password. Please try again.';
+            } else if (err.code === 'auth/weak-password') {
+                message = 'Password is too weak. Please use at least 6-8 characters.';
+            }
+            error.textContent = message;
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = (isSignUpMode ? 'CREATE ACCOUNT & ADD TO CART' : 'SIGN IN & ADD TO CART') + ' <span>&rarr;</span>';
+        }
     });
     gate.querySelector('#auth-email').focus();
 }
