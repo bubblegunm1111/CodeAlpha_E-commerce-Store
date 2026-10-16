@@ -50,11 +50,15 @@ function optionalToken(req, res, next) {
 }
 
 // Initialize SQLite database
-const db = new sqlite3.Database('./database.sqlite', (err) => {
+// In serverless environments like Vercel, the local root is read-only, so /tmp is used if needed
+const isServerless = process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME;
+const dbPath = isServerless ? path.join('/tmp', 'database.sqlite') : path.join(__dirname, 'database.sqlite');
+
+const db = new sqlite3.Database(dbPath, (err) => {
     if (err) {
         console.error('Error opening database', err.message);
     } else {
-        console.log('Connected to SQLite database.');
+        console.log('Connected to SQLite database at:', dbPath);
 
         db.serialize(() => {
             // Users table with hashed passwords
@@ -427,7 +431,11 @@ app.post('/api/users', async (req, res) => {
     );
 });
 
-// Start Server
-app.listen(PORT, () => {
-    console.log(`Server is running at http://localhost:${PORT}`);
-});
+// Start Server (only if run directly, Vercel exports the app handler)
+if (!process.env.VERCEL) {
+    app.listen(PORT, () => {
+        console.log(`Server is running at http://localhost:${PORT}`);
+    });
+}
+
+module.exports = app;
