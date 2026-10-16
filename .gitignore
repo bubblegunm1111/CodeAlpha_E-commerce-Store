@@ -1,6 +1,31 @@
-node_modules/
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data & SQLite databases
 *.db
 *.sqlite
-.env
-*.tmp*
+*.sqlite3
 
+# Dependency directories
+node_modules/
+
+# Environment variables & secrets
+.env
+.env.local
+.env.*.local
+
+# Vercel & IDE artifacts
+.vercel
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.tmp*
+.agents/
+.claude/
+.cursor/
+.kiro/
