@@ -195,7 +195,6 @@ function openAuthGate() {
             </button>
 
             <button class="auth-signup" type="button" id="auth-signup">NEW TO SYS? CREATE AN ACCOUNT</button>
-            <p class="auth-note" style="color: var(--accent); opacity: 0.85;">🔒 Secured by Google Firebase</p>
         </section>
     `;
     document.body.appendChild(gate);

@@ -1954,6 +1954,11 @@ h1, h2, h3, h4, h5, h6, .logo {
     letter-spacing: 0.08em;
 }
 
+.account-switch-btn:hover {
+    background: var(--accent) !important;
+    color: var(--bg-dark) !important;
+}
+
 .favorites-list {
     border-top: 1px solid var(--accent);
 }
